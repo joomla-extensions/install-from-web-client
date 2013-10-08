@@ -1,4 +1,1 @@
-extensions
-==========
-
-Joomla! CMS Extensions
+Install from Web tab for Joomla! installer
