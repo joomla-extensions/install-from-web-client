@@ -18,8 +18,7 @@ defined('_JEXEC') or die;
  */
 class PlgInstallerWebinstaller extends JPlugin
 {
-//	public $appsBaseUrl = 'http://appscdn.joomla.org/webapps/';	// will be https once CDN is setup for SSL
-	public $appsBaseUrl = 'http://localhost/joomla-cms-apps/';	// will be https once CDN is setup for SSL
+	public $appsBaseUrl = 'http://appscdn.joomla.org/webapps/';	// will be https once CDN is setup for SSL
 
 	private $_hathor = null;
 	private $_installfrom = null;
