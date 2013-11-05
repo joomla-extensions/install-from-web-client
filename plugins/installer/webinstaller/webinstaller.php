@@ -18,7 +18,8 @@ defined('_JEXEC') or die;
  */
 class PlgInstallerWebinstaller extends JPlugin
 {
-	public $appsBaseUrl = 'http://appscdn.joomla.org/webapps/';	// will be https once CDN is setup for SSL
+//	public $appsBaseUrl = 'http://appscdn.joomla.org/webapps/';	// will be https once CDN is setup for SSL
+	public $appsBaseUrl = 'http://localhost/joomla-cms-apps/';	// will be https once CDN is setup for SSL
 
 	private $_hathor = null;
 	private $_installfrom = null;
@@ -61,11 +62,11 @@ class PlgInstallerWebinstaller extends JPlugin
 		$apps_product = base64_encode($ver->PRODUCT);
 		$apps_release = base64_encode($ver->RELEASE);
 		$apps_dev_level = base64_encode($ver->DEV_LEVEL);
-		$btntxt = str_replace("'", "\'", JText::_('COM_INSTALLER_MSG_INSTALL_ENTER_A_URL', true));
+		$btntxt = JText::_('COM_INSTALLER_MSG_INSTALL_ENTER_A_URL', true);
 		$pv = base64_encode($manifest->version);
-		$updatestr1 = str_replace("'", "\'", JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_UPDATE_AVAILABLE', true));
-		$obsoletestr = str_replace("'", "\'", JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_OBSOLETE', true));
-		$updatestr2 = str_replace("'", "\'", JText::_('JLIB_INSTALLER_UPDATE', true));
+		$updatestr1 = JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_UPDATE_AVAILABLE', true);
+		$obsoletestr = JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_OBSOLETE', true);
+		$updatestr2 = JText::_('JLIB_INSTALLER_UPDATE', true);
 
 		$javascript = <<<END
 apps_base_url = '$apps_base_url';
