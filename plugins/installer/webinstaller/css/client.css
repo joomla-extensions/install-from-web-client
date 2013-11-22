@@ -1,4 +1,5 @@
 /* Extension type badges */
+.com-apps-container .label-jcommercial, .com-apps-container .badge-jcommercial{background-color:#f6c801}
 .com-apps-container .label-jmodule, .com-apps-container .badge-jmodule{background-color:#e20a0a}
 .com-apps-container .label-jplugin, .com-apps-container .badge-jplugin{background-color:#57278e}
 .com-apps-container .label-jcomponent, .com-apps-container .badge-jcomponent{background-color: #1e9e33}
@@ -79,7 +80,6 @@
 }
 .list-container .thumbnails .item .item-description{
 	float:left;
-	border-right:1px solid #ccc;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	-webkit-box-sizing: border-box;
@@ -90,6 +90,8 @@
 .list-container .thumbnails .item .item-icons{
 	width:22%;
 	float: right;
+	border-left: 1px solid #ccc;
+	padding: 0px;
 }
 .list-container .thumbnails .item .item-description {
 	width:50%;
@@ -141,6 +143,9 @@ div.item-description {
 	float: left;
 	padding: 5px;
 	height: 100%;
+}
+.list-container .thumbnails .thumbnail div.item-icons div {
+	padding: 0px;
 }
 .list-container .thumbnails .item .item-icons div {
 	float: left;
