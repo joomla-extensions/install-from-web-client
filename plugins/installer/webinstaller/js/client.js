@@ -1,3 +1,8 @@
+// Only define the Joomla namespace if not defined.
+if (typeof(Joomla) === 'undefined') {
+	var Joomla = {};
+}
+
 Joomla.apps = {
 	view: "dashboard",
 	id: 0,
