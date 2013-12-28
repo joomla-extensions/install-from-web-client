@@ -8,6 +8,12 @@
  */
 
 defined('_JEXEC') or die;
+if (version_compare(JVERSION, '3.0', '<')) {
+	$document = JFactory::getDocument();
+	$document->addScript(JURI::root() . "plugins/installer/webinstaller/js/jquery.min.js");
+	$document->addScript(JURI::root() . "plugins/installer/webinstaller/js/jquery-noconflict.js");
+	$document->addScript(JURI::root() . "plugins/installer/webinstaller/js/jquery-migrate.min.js");
+}
 
 /**
  * Support for the "Install from Web" tab
@@ -22,6 +28,8 @@ class PlgInstallerWebinstaller extends JPlugin
 
 	private $_hathor = null;
 	private $_installfrom = null;
+	private $_j25 = null;
+	private $_rtl = null;
 
 	public function onInstallerBeforeDisplay(&$showJedAndWebInstaller)
 	{
@@ -44,13 +52,23 @@ class PlgInstallerWebinstaller extends JPlugin
 		if ($this->params->get('tab_position', 0)) {
 			$this->getChanges();
 		}
-		$ishathor = $this->isHathor() ? 1 : 0;
+		$ishathor = $this->isHathor();
 		$installfrom = $this->getInstallFrom();
 		$installfromon = $installfrom ? 1 : 0;
 
 		$document = JFactory::getDocument();
 		$ver = new JVersion;
 		$min = JFactory::getConfig()->get('debug') ? '' : '.min';
+
+		if ($this->isJ25() || $this->isHathor()) {
+			$document->addStyleSheet(JURI::root() . 'plugins/installer/webinstaller/css/bootstrap' . $min . '.css');
+			$document->addStyleSheet(JURI::root() . 'plugins/installer/webinstaller/css/bootstrap-responsive' . $min . '.css');
+		}
+		$document->addScript(JURI::root() . 'plugins/installer/webinstaller/js/client' . $min . '.js?jversion=' . JVERSION);
+		$document->addStyleSheet(JURI::root() . 'plugins/installer/webinstaller/css/client' . $min . '.css?jversion=' . JVERSION);
+		if ($this->isJ25() || $this->isHathor()) {
+			$document->addStyleSheet(JURI::root() . 'plugins/installer/webinstaller/css/client-j25' . $min . '.css?jversion=' . JVERSION);
+		}
 
 		$installer = new JInstaller();
 		$manifest = $installer->isManifest(JPATH_PLUGINS . DIRECTORY_SEPARATOR . 'installer' . DIRECTORY_SEPARATOR . 'webinstaller' . DIRECTORY_SEPARATOR . 'webinstaller.xml');
@@ -66,6 +84,7 @@ class PlgInstallerWebinstaller extends JPlugin
 		$updatestr1 = JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_UPDATE_AVAILABLE', true);
 		$obsoletestr = JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_OBSOLETE', true);
 		$updatestr2 = JText::_('JLIB_INSTALLER_UPDATE', true);
+		$j25 = $this->isJ25();
 
 		$javascript = <<<END
 apps_base_url = '$apps_base_url';
@@ -81,8 +100,26 @@ apps_pv = '$pv';
 apps_updateavail1 = '$updatestr1';
 apps_updateavail2 = '$updatestr2';
 apps_obsolete = '$obsoletestr';
+apps_j25 = $j25;
 
 jQuery(document).ready(function() {
+	if (apps_j25) {
+		var outerDiv = jQuery('#jed-container');
+	
+		jQuery('<div id="loading"></div>')
+			.css("background", "rgba(255, 255, 255, .8) url('../plugins/installer/webinstaller/img/ajax-loader.gif') 50% 15% no-repeat")
+			.css("top", outerDiv.position().top - jQuery(window).scrollTop())
+			.css("left", outerDiv.position().left - jQuery(window).scrollLeft())
+			.css("width", outerDiv.width())
+			.css("height", outerDiv.height())
+			.css("position", "fixed")
+			.css("opacity", "0.80")
+			.css("-ms-filter", "progid:DXImageTransform.Microsoft.Alpha(Opacity = 80)")
+			.css("filter", "alpha(opacity = 80)")
+			.css("display", "none")
+			.appendTo(outerDiv);
+	}
+
 	if (apps_installfromon)
 	{
 		jQuery('#myTabTabs a[href="#web"]').click();
@@ -98,6 +135,9 @@ jQuery(document).ready(function() {
 
 	jQuery(eventpoint).click(function (event){
 		if (!Joomla.apps.loaded) {
+			if (apps_j25 || apps_is_hathor) {
+				jQuery('#uploadform-web').parent().parent().css("width", "100%");
+			}
 			Joomla.apps.initialize();
 		}
 	});
@@ -137,10 +177,14 @@ jQuery(document).ready(function() {
 
 		
 END;
-
 		$document->addScriptDeclaration($javascript);
-		$document->addScript(JURI::root() . 'plugins/installer/webinstaller/js/client' . $min . '.js?jversion=' . JVERSION);
-		$document->addStyleSheet(JURI::root() . 'plugins/installer/webinstaller/css/client' . $min . '.css?jversion=' . JVERSION);
+	}
+	
+	private function isJ25() {
+		if (is_null($this->_j25)) {
+			$this->_j25 = version_compare(JVERSION, '3.0', '<') ? 1 : 0;
+		}
+		return $this->_j25;
 	}
 	
 	private function isHathor()
@@ -151,16 +195,24 @@ END;
 			$templateName = strtolower($app->getTemplate());
 			if ($templateName == 'hathor')
 			{
-				$this->_hathor = true;
+				$this->_hathor = 1;
 			}
 			else
 			{
-				$this->_hathor = false;
+				$this->_hathor = $this->isJ25() ? 1 : 0;
 			}
 		}
 		return $this->_hathor;
 	}
 
+	private function isRTL() {
+		if (is_null($this->_rtl)) {
+			$document = JFactory::getDocument();
+			$this->_rtl = strtolower($document->direction) == 'rtl' ? 1 : 0;
+		}
+		return $this->_rtl;
+	}
+	
 	private function getInstallFrom()
 	{
 		if (is_null($this->_installfrom))
@@ -168,6 +220,9 @@ END;
 			$app = JFactory::getApplication();
 			$installfrom = base64_decode($app->input->get('installfrom', '', 'base64'));
 	
+			if ($this->isJ25()) {
+				JFormHelper::loadRuleClass('url');
+			}
 			$field = new SimpleXMLElement('<field></field>');
 			$rule = new JFormRuleUrl;
 			if ($rule->test($field, $installfrom) && preg_match('/\.xml\s*$/', $installfrom)) {
@@ -189,17 +244,23 @@ END;
 		$ishathor = $this->isHathor() ? 1 : 0;
 		$installfrom = $this->getInstallFrom();
 		$installfromon = $installfrom ? 1 : 0;
+		$dir = '';
+		if ($this->isRTL()) {
+			$dir = ' dir="ltr"';
+		}
 
 		if ($ishathor)
 		{
-			JHtml::_('jquery.framework');
+			if (!$this->isJ25()) {
+				JHtml::_('jquery.framework');
+				echo '<div class="clr"></div>';
+			}
 ?>
-			<div class="clr"></div>
 			<fieldset class="uploadform">
 				<legend><?php echo JText::_('COM_INSTALLER_INSTALL_FROM_WEB', true); ?></legend>
-				<div id="jed-container">
+				<div id="jed-container"<?php echo $dir; ?>>
 					<div id="mywebinstaller" style="display:none">
-						<a href="#"><?php echo JText::_('PLG_INSTALLER_WEBINSTALLER_LOAD_APPS'); ?></a>
+						<a href="#"><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_LOAD_APPS'); ?></a>
 					</div>
 					<div class="well" id="web-loader" style="display:none">
 						<h2><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_LOADING'); ?></h2>
@@ -208,7 +269,7 @@ END;
 						<a class="close" data-dismiss="alert">×</a><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_LOADING_ERROR'); ?>
 					</div>
 				</div>
-				<fieldset class="uploadform" id="uploadform-web" style="display:none">
+				<fieldset class="uploadform" id="uploadform-web" style="display:none"<?php echo $dir; ?>>
 					<div class="control-group">
 						<strong><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_CONFIRM'); ?></strong><br />
 						<span id="uploadform-web-name-label"><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_CONFIRM_NAME'); ?>:</span> <span id="uploadform-web-name"></span><br />
@@ -220,8 +281,10 @@ END;
 					</div>
 				</fieldset>
 			</fieldset>
-
 <?php
+			if ($this->isJ25()) {
+				echo '<div class="clr"></div>';
+			}
 		}
 		else
 		{
@@ -236,7 +299,7 @@ END;
 					</div>
 				</div>
 	
-				<fieldset class="uploadform" id="uploadform-web" style="display:none">
+				<fieldset class="uploadform" id="uploadform-web" style="display:none"<?php echo $dir; ?>>
 					<div class="control-group">
 						<strong><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_CONFIRM'); ?></strong><br />
 						<span id="uploadform-web-name-label"><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_CONFIRM_NAME'); ?>:</span> <span id="uploadform-web-name"></span><br />
@@ -247,7 +310,7 @@ END;
 						<input type="button" class="btn btn-secondary" value="<?php echo JText::_('JCANCEL'); ?>" onclick="Joomla.installfromwebcancel()" />
 					</div>
 				</fieldset>
-			
+
 <?php
 			echo JHtml::_('bootstrap.endTab');
 		}

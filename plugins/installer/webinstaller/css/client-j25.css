@@ -1,0 +1,1116 @@
+@font-face {
+	font-family: 'IcoMoon';
+	src: url('../../../../plugins/installer/webinstaller/fonts/IcoMoon.eot');
+	src: url('../../../../plugins/installer/webinstaller/fonts/IcoMoon.eot?#iefix') format('embedded-opentype'),
+		url('../../../../plugins/installer/webinstaller/fonts/IcoMoon.woff') format('woff'),
+		url('../../../../plugins/installer/webinstaller/fonts/IcoMoon.ttf') format('truetype'),
+		url('../../../../plugins/installer/webinstaller/fonts/IcoMoon.svg#IcoMoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+// CSS Reset
+@import "../../../../plugins/installer/webinstaller/less/reset.less";
+
+// Core variables and mixins
+@import "../../../../plugins/installer/webinstaller/less/mixins.less";
+
+// Grid system and page structure
+@import "../../../../plugins/installer/webinstaller/less/scaffolding.less";
+@import "../../../../plugins/installer/webinstaller/less/grid.less";
+@import "../../../../plugins/installer/webinstaller/less/layouts.less";
+
+// Base CSS
+@import "../../../../plugins/installer/webinstaller/less/type.less";
+@import "../../../../plugins/installer/webinstaller/less/code.less";
+@import "../../../../plugins/installer/webinstaller/less/forms.less";
+@import "../../../../plugins/installer/webinstaller/less/tables.less";
+
+// Components: common
+// @import "../../../../plugins/installer/webinstaller/less/sprites.less";
+@import "../../../../plugins/installer/webinstaller/less/dropdowns.less";
+@import "../../../../plugins/installer/webinstaller/less/wells.less";
+@import "../../../../plugins/installer/webinstaller/less/component-animations.less";
+@import "../../../../plugins/installer/webinstaller/less/close.less";
+
+// Components: Buttons & Alerts
+@import "../../../../plugins/installer/webinstaller/less/buttons.less";
+@import "../../../../plugins/installer/webinstaller/less/button-groups.less";
+@import "../../../../plugins/installer/webinstaller/less/alerts.less"; // Note: alerts share common CSS with buttons and thus have styles in buttons.less
+
+// Components: Nav
+@import "../../../../plugins/installer/webinstaller/less/navs.less";
+@import "../../../../plugins/installer/webinstaller/less/navbar.less";
+@import "../../../../plugins/installer/webinstaller/less/breadcrumbs.less";
+@import "../../../../plugins/installer/webinstaller/less/pagination.less";
+@import "../../../../plugins/installer/webinstaller/less/pager.less";
+
+// Components: Popovers
+@import "../../../../plugins/installer/webinstaller/less/modals.less";
+@import "../../../../plugins/installer/webinstaller/less/tooltip.less";
+@import "../../../../plugins/installer/webinstaller/less/popovers.less";
+
+// Components: Misc
+@import "../../../../plugins/installer/webinstaller/less/thumbnails.less";
+@import "../../../../plugins/installer/webinstaller/less/labels-badges.less";
+@import "../../../../plugins/installer/webinstaller/less/progress-bars.less";
+@import "../../../../plugins/installer/webinstaller/less/accordion.less";
+@import "../../../../plugins/installer/webinstaller/less/carousel.less";
+@import "../../../../plugins/installer/webinstaller/less/hero-unit.less";
+
+// Utility classes
+@import "../../../../plugins/installer/webinstaller/less/utilities.less";
+
+// RESPONSIVE CLASSES
+// ------------------
+
+@import "../../../../plugins/installer/webinstaller/less/responsive-utilities.less";
+
+
+// MEDIA QUERIES
+// ------------------
+
+// Phones to portrait tablets and narrow desktops
+@import "../../../../plugins/installer/webinstaller/less/responsive-767px-max.less";
+
+// Tablets to regular desktops
+@import "../../../../plugins/installer/webinstaller/less/responsive-768px-979px.less";
+
+// Large desktops
+@import "../../../../plugins/installer/webinstaller/less/responsive-1200px-min.less";
+
+
+// RESPONSIVE NAVBAR
+// ------------------
+
+// From 979px and below, show a button to toggle navbar contents
+@import "../../../../plugins/installer/webinstaller/less/responsive-navbar.less";
+
+// Extended for JUI
+@import "../../../../plugins/installer/webinstaller/less/bootstrap-extended.less"; // Has to be last to override when necessary
+// div.modal (instead of .modal)
+@import "../../../../plugins/installer/webinstaller/less/modals.joomla.less";
+@import "../../../../plugins/installer/webinstaller/less/responsive-767px-max.joomla.less";
+
+// Icon Font
+@import "../../../../plugins/installer/webinstaller/less/icomoon.less";
+
+// Variables.less
+// Variables to customize the look and feel of Bootstrap
+// -----------------------------------------------------
+
+
+
+// GLOBAL VALUES
+// --------------------------------------------------
+
+
+// Grays
+// -------------------------
+@black:                 #000;
+@grayDarker:            #222;
+@grayDark:              #333;
+@gray:                  #555;
+@grayLight:             #999;
+@grayLighter:           #eee;
+@white:                 #fff;
+
+
+// Accent colors
+// -------------------------
+@blue:                  #049cdb;
+@blueDark:              #0064cd;
+@green:                 #46a546;
+@red:                   #9d261d;
+@yellow:                #ffc40d;
+@orange:                #f89406;
+@pink:                  #c3325f;
+@purple:                #7a43b6;
+
+
+// Scaffolding
+// -------------------------
+@bodyBackground:        @white;
+@textColor:             @grayDark;
+
+
+// Links
+// -------------------------
+@linkColor:             #08c;
+@linkColorHover:        darken(@linkColor, 15%);
+
+
+// Typography
+// -------------------------
+@sansFontFamily:        "Helvetica Neue", Helvetica, Arial, sans-serif;
+@serifFontFamily:       Georgia, "Times New Roman", Times, serif;
+@monoFontFamily:        Menlo, Monaco, Consolas, "Courier New", monospace;
+
+@baseFontSize:          13px;
+@baseFontFamily:        @sansFontFamily;
+@baseLineHeight:        18px;
+@altFontFamily:         @serifFontFamily;
+
+@headingsFontFamily:    inherit; // empty to use BS default, @baseFontFamily
+@headingsFontWeight:    bold;    // instead of browser default, bold
+@headingsColor:         inherit; // empty to use BS default, @textColor
+
+
+// Tables
+// -------------------------
+@tableBackground:                   transparent; // overall background-color
+@tableBackgroundAccent:             #f9f9f9; // for striping
+@tableBackgroundHover:              #f5f5f5; // for hover
+@tableBorder:                       #ddd; // table and cell border
+
+
+// Buttons
+// -------------------------
+@btnBackground:                     @white;
+@btnBackgroundHighlight:            darken(@white, 10%);
+@btnBorder:                         #ccc;
+
+@btnPrimaryBackground:              #2384d3;
+@btnPrimaryBackgroundHighlight:     #15497c;
+
+@btnInfoBackground:                 #5bc0de;
+@btnInfoBackgroundHighlight:        #2f96b4;
+
+@btnSuccessBackground:              #62c462;
+@btnSuccessBackgroundHighlight:     #51a351;
+
+@btnWarningBackground:              lighten(@orange, 15%);
+@btnWarningBackgroundHighlight:     @orange;
+
+@btnDangerBackground:               #ee5f5b;
+@btnDangerBackgroundHighlight:      #bd362f;
+
+@btnInverseBackground:              @gray;
+@btnInverseBackgroundHighlight:     @grayDarker;
+
+
+// Forms
+// -------------------------
+@inputBackground:               @white;
+@inputBorder:                   #ccc;
+@inputBorderRadius:             3px;
+@inputDisabledBackground:       @grayLighter;
+@formActionsBackground:         #f5f5f5;
+
+// Dropdowns
+// -------------------------
+@dropdownBackground:            @white;
+@dropdownBorder:                rgba(0,0,0,.2);
+@dropdownLinkColor:             @grayDark;
+@dropdownLinkColorHover:        @white;
+@dropdownLinkBackgroundHover:   @linkColor;
+@dropdownDividerTop:            #e5e5e5;
+@dropdownDividerBottom:         @white;
+
+
+
+// COMPONENT VARIABLES
+// --------------------------------------------------
+
+// Z-index master list
+// -------------------------
+// Used for a bird's eye view of components dependent on the z-axis
+// Try to avoid customizing these :)
+@zindexDropdown:          1000;
+@zindexPopover:           1010;
+@zindexTooltip:           1020;
+@zindexFixedNavbar:       1030;
+@zindexModalBackdrop:     1040;
+@zindexModal:             1050;
+
+
+// Sprite icons path
+// -------------------------
+@iconSpritePath:          "../../../../plugins/installer/webinstaller/img/glyphicons-halflings.png";
+@iconWhiteSpritePath:     "../../../../plugins/installer/webinstaller/img/glyphicons-halflings-white.png";
+
+
+// Input placeholder text color
+// -------------------------
+@placeholderText:         @grayLight;
+
+
+// Hr border color
+// -------------------------
+@hrBorder:                @grayLighter;
+
+
+// Navbar
+// -------------------------
+@navbarHeight:                    40px;
+@navbarBackground:                @grayDarker;
+@navbarBackgroundHighlight:       @grayDark;
+
+@navbarText:                      @grayLight;
+@navbarLinkColor:                 @grayLight;
+@navbarLinkColorHover:            @white;
+@navbarLinkColorActive:           @navbarLinkColorHover;
+@navbarLinkBackgroundHover:       transparent;
+@navbarLinkBackgroundActive:      @navbarBackground;
+
+@navbarSearchBackground:          lighten(@navbarBackground, 25%);
+@navbarSearchBackgroundFocus:     @white;
+@navbarSearchBorder:              darken(@navbarSearchBackground, 30%);
+@navbarSearchPlaceholderColor:    #ccc;
+@navbarBrandColor:                @navbarLinkColor;
+
+
+// Hero unit
+// -------------------------
+@heroUnitBackground:              @grayLighter;
+@heroUnitHeadingColor:            inherit;
+@heroUnitLeadColor:               inherit;
+
+
+// Form states and alerts
+// -------------------------
+@warningText:             #c09853;
+@warningBackground:       #fcf8e3;
+@warningBorder:           darken(spin(@warningBackground, -10), 3%);
+
+@errorText:               #b94a48;
+@errorBackground:         #f2dede;
+@errorBorder:             darken(spin(@errorBackground, -10), 3%);
+
+@successText:             #468847;
+@successBackground:       #dff0d8;
+@successBorder:           darken(spin(@successBackground, -10), 5%);
+
+@infoText:                #3a87ad;
+@infoBackground:          #d9edf7;
+@infoBorder:              darken(spin(@infoBackground, -10), 7%);
+
+
+
+// GRID
+// --------------------------------------------------
+
+// Default 940px grid
+// -------------------------
+@gridColumns:             12;
+@gridColumnWidth:         60px;
+@gridGutterWidth:         20px;
+@gridRowWidth:            (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1));
+
+// Fluid grid
+// -------------------------
+@fluidGridColumnWidth:    6.382978723%;
+@fluidGridGutterWidth:    2.127659574%;
+
+
+// Login
+// -------------------------
+@loginBackground:                 #142849;
+@loginBackgroundHighlight:        #165387;
+
+// Header
+// -------------------------
+@headerBackground:                 #1a3867;
+@headerBackgroundHighlight:        #17568c;
+
+.com-apps-container [data-icon]:before {
+	font-family: 'IcoMoon';
+	content: attr(data-icon);
+	speak: none;
+}
+.com-apps-container [class^="icon-"],
+.com-apps-container [class*=" icon-"] {
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	*margin-right: .3em;
+	line-height: 14px;
+}
+.com-apps-container [class^="icon-"]:before,
+.com-apps-container [class*=" icon-"]:before {
+	font-family: 'IcoMoon';
+	font-style: normal;
+	speak: none;
+}
+.com-apps-container [class^="icon-"].disabled,
+.com-apps-container [class*=" icon-"].disabled {
+	font-weight: normal;
+}
+.com-apps-container .icon-joomla:before {
+	content: "\e200";
+}
+.com-apps-container .icon-chevron-up:before,
+.com-apps-container .icon-uparrow:before,
+.com-apps-container .icon-arrow-up:before {
+	content: "\e005";
+}
+.com-apps-container .icon-chevron-right:before,
+.com-apps-container .icon-rightarrow:before,
+.com-apps-container .icon-arrow-right:before {
+	content: "\e006";
+}
+.com-apps-container .icon-chevron-down:before,
+.com-apps-container .icon-downarrow:before,
+.com-apps-container .icon-arrow-down:before {
+	content: "\e007";
+}
+.com-apps-container .icon-chevron-left:before,
+.com-apps-container .icon-leftarrow:before,
+.com-apps-container .icon-arrow-left:before {
+	content: "\e008";
+}
+.com-apps-container .icon-arrow-first:before {
+	content: "\e003";
+}
+.com-apps-container .icon-arrow-last:before {
+	content: "\e004";
+}
+.com-apps-container .icon-arrow-up-2:before {
+	content: "\e009";
+}
+.com-apps-container .icon-arrow-right-2:before {
+	content: "\e00a";
+}
+.com-apps-container .icon-arrow-down-2:before {
+	content: "\e00b";
+}
+.com-apps-container .icon-arrow-left-2:before {
+	content: "\e00c";
+}
+.com-apps-container .icon-arrow-up-3:before {
+	content: "\e00f";
+}
+.com-apps-container .icon-arrow-right-3:before {
+	content: "\e010";
+}
+.com-apps-container .icon-arrow-down-3:before {
+	content: "\e011";
+}
+.com-apps-container .icon-arrow-left-3:before {
+	content: "\e012";
+}
+.com-apps-container .icon-menu-2:before {
+	content: "\e00e";
+}
+.com-apps-container .icon-arrow-up-4:before {
+	content: "\e201";
+}
+.com-apps-container .icon-arrow-right-4:before {
+	content: "\e202";
+}
+.com-apps-container .icon-arrow-down-4:before {
+	content: "\e203";
+}
+.com-apps-container .icon-arrow-left-4:before {
+	content: "\e204";
+}
+.com-apps-container .icon-share:before,
+.com-apps-container .icon-redo:before {
+	content: "\27";
+}
+.com-apps-container .icon-undo:before {
+	content: "\28";
+}
+.com-apps-container .icon-forward-2:before {
+	content: "\e205";
+}
+.com-apps-container .icon-backward-2:before,
+.com-apps-container .icon-reply:before {
+	content: "\e206";
+}
+.com-apps-container .icon-unblock:before,
+.com-apps-container .icon-refresh:before,
+.com-apps-container .icon-redo-2:before {
+	content: "\6c";
+}
+.com-apps-container .icon-undo-2:before {
+	content: "\e207";
+}
+.com-apps-container .icon-move:before {
+	content: "\7a";
+}
+.com-apps-container .icon-expand:before {
+	content: "\66";
+}
+.com-apps-container .icon-contract:before {
+	content: "\67";
+}
+.com-apps-container .icon-expand-2:before {
+	content: "\68";
+}
+.com-apps-container .icon-contract-2:before {
+	content: "\69";
+}
+.com-apps-container .icon-play:before {
+	content: "\e208";
+}
+.com-apps-container .icon-pause:before {
+	content: "\e209";
+}
+.com-apps-container .icon-stop:before {
+	content: "\e210";
+}
+.com-apps-container .icon-previous:before,
+.com-apps-container .icon-backward:before {
+	content: "\7c";
+}
+.com-apps-container .icon-next:before,
+.com-apps-container .icon-forward:before {
+	content: "\7b";
+}
+.com-apps-container .icon-first:before {
+	content: "\7d";
+}
+.com-apps-container .icon-last:before {
+	content: "\e000";
+}
+.com-apps-container .icon-play-circle:before {
+	content: "\e00d";
+}
+.com-apps-container .icon-pause-circle:before {
+	content: "\e211";
+}
+.com-apps-container .icon-stop-circle:before {
+	content: "\e212";
+}
+.com-apps-container .icon-backward-circle:before {
+	content: "\e213";
+}
+.com-apps-container .icon-forward-circle:before {
+	content: "\e214";
+}
+.com-apps-container .icon-loop:before {
+	content: "\e001";
+}
+.com-apps-container .icon-shuffle:before {
+	content: "\e002";
+}
+.com-apps-container .icon-search:before {
+	content: "\53";
+}
+.com-apps-container .icon-zoom-in:before {
+	content: "\64";
+}
+.com-apps-container .icon-zoom-out:before {
+	content: "\65";
+}
+.com-apps-container .icon-apply:before,
+.com-apps-container .icon-edit:before,
+.com-apps-container .icon-pencil:before {
+	content: "\2b";
+}
+.com-apps-container .icon-pencil-2:before {
+	content: "\2c";
+}
+.com-apps-container .icon-brush:before {
+	content: "\3b";
+}
+.com-apps-container .icon-save-new:before,
+.com-apps-container .icon-plus-2:before {
+	content: "\5d";
+}
+.com-apps-container .icon-ban-circle:before,
+.com-apps-container .icon-minus-sign:before,
+.com-apps-container .icon-minus-2:before {
+	content: "\5e";
+}
+.com-apps-container .icon-delete:before,
+.com-apps-container .icon-remove:before,
+.com-apps-container .icon-cancel-2:before {
+	content: "\49";
+}
+.com-apps-container .icon-publish:before,
+.com-apps-container .icon-save:before,
+.com-apps-container .icon-ok:before,
+.com-apps-container .icon-checkmark:before {
+	content: "\47";
+}
+.com-apps-container .icon-new:before,
+.com-apps-container .icon-plus:before {
+	content: "\2a";
+}
+.com-apps-container .icon-plus-circle:before {
+	content: "\e215";
+}
+.com-apps-container .icon-minus:before,
+.com-apps-container .icon-not-ok:before {
+	content: "\4b";
+}
+.com-apps-container .icon-minus-circle:before {
+	content: "\e216";
+}
+.com-apps-container .icon-unpublish:before,
+.com-apps-container .icon-cancel:before {
+	content: "\4a";
+}
+.com-apps-container .icon-cancel-circle:before {
+	content: "\e217";
+}
+.com-apps-container .icon-checkmark-2:before {
+	content: "\e218";
+}
+.com-apps-container .icon-checkmark-circle:before {
+	content: "\e219";
+}
+.com-apps-container .icon-info:before {
+	content: "\e220";
+}
+.com-apps-container .icon-info-2:before,
+.com-apps-container .icon-info-circle:before {
+	content: "\e221";
+}
+.com-apps-container .icon-question:before,
+.com-apps-container .icon-question-sign:before,
+.com-apps-container .icon-help:before {
+	content: "\45";
+}
+.com-apps-container .icon-question-2:before,
+.com-apps-container .icon-question-circle:before {
+	content: "\e222";
+}
+.com-apps-container .icon-notification:before {
+	content: "\e223";
+}
+.com-apps-container .icon-notification-2:before,
+.com-apps-container .icon-notification-circle:before {
+	content: "\e224";
+}
+.com-apps-container .icon-pending:before,
+.com-apps-container .icon-warning:before {
+	content: "\48";
+}
+.com-apps-container .icon-warning-2:before,
+.com-apps-container .icon-warning-circle:before {
+	content: "\e225";
+}
+.com-apps-container .icon-checkbox-unchecked:before {
+	content: "\3d";
+}
+.com-apps-container .icon-checkin:before,
+.com-apps-container .icon-checkbox:before,
+.com-apps-container .icon-checkbox-checked:before {
+	content: "\3e";
+}
+.com-apps-container .icon-checkbox-partial:before {
+	content: "\3f";
+}
+.com-apps-container .icon-square:before {
+	content: "\e226";
+}
+.com-apps-container .icon-radio-unchecked:before {
+	content: "\e227";
+}
+.com-apps-container .icon-radio-checked:before,
+.com-apps-container .icon-generic:before {
+	content: "\e228";
+}
+.com-apps-container .icon-circle:before {
+	content: "\e229";
+}
+.com-apps-container .icon-signup:before {
+	content: "\e230";
+}
+.com-apps-container .icon-grid:before,
+.com-apps-container .icon-grid-view:before {
+	content: "\58";
+}
+.com-apps-container .icon-grid-2:before,
+.com-apps-container .icon-grid-view-2:before {
+	content: "\59";
+}
+.com-apps-container .icon-menu:before {
+	content: "\5a";
+}
+.com-apps-container .icon-list:before,
+.com-apps-container .icon-list-view:before {
+	content: "\31";
+}
+.com-apps-container .icon-list-2:before {
+	content: "\e231";
+}
+.com-apps-container .icon-menu-3:before {
+	content: "\e232";
+}
+.com-apps-container .icon-folder-open:before,
+.com-apps-container .icon-folder:before {
+	content: "\2d";
+}
+.com-apps-container .icon-folder-close:before,
+.com-apps-container .icon-folder-2:before {
+	content: "\2e";
+}
+.com-apps-container .icon-folder-plus:before {
+	content: "\e234";
+}
+.com-apps-container .icon-folder-minus:before {
+	content: "\e235";
+}
+.com-apps-container .icon-folder-3:before {
+	content: "\e236";
+}
+.com-apps-container .icon-folder-plus-2:before {
+	content: "\e237";
+}
+.com-apps-container .icon-folder-remove:before {
+	content: "\e238";
+}
+.com-apps-container .icon-file:before {
+	content: "\e016";
+}
+.com-apps-container .icon-file-2:before {
+	content: "\e239";
+}
+.com-apps-container .icon-file-add:before,
+.com-apps-container .icon-file-plus:before {
+	content: "\29";
+}
+.com-apps-container .icon-file-remove:before,
+.com-apps-container .icon-file-minus:before {
+	content: "\e017";
+}
+.com-apps-container .icon-file-check:before {
+	content: "\e240";
+}
+.com-apps-container .icon-file-remove:before {
+	content: "\e241";
+}
+.com-apps-container .icon-save-copy:before,
+.com-apps-container .icon-copy:before {
+	content: "\e018";
+}
+.com-apps-container .icon-stack:before {
+	content: "\e242";
+}
+.com-apps-container .icon-tree:before {
+	content: "\e243";
+}
+.com-apps-container .icon-tree-2:before {
+	content: "\e244";
+}
+.com-apps-container .icon-paragraph-left:before {
+	content: "\e246";
+}
+.com-apps-container .icon-paragraph-center:before {
+	content: "\e247";
+}
+.com-apps-container .icon-paragraph-right:before {
+	content: "\e248";
+}
+.com-apps-container .icon-paragraph-justify:before {
+	content: "\e249";
+}
+.com-apps-container .icon-screen:before {
+	content: "\e01c";
+}
+.com-apps-container .icon-tablet:before {
+	content: "\e01d";
+}
+.com-apps-container .icon-mobile:before {
+	content: "\e01e";
+}
+.com-apps-container .icon-box-add:before {
+	content: "\51";
+}
+.com-apps-container .icon-box-remove:before {
+	content: "\52";
+}
+.com-apps-container .icon-download:before {
+	content: "\e021";
+}
+.com-apps-container .icon-upload:before {
+	content: "\e022";
+}
+.com-apps-container .icon-home:before {
+	content: "\21";
+}
+.com-apps-container .icon-home-2:before {
+	content: "\e250";
+}
+.com-apps-container .icon-out-2:before,
+.com-apps-container .icon-new-tab:before {
+	content: "\e024";
+}
+.com-apps-container .icon-out-3:before,
+.com-apps-container .icon-new-tab-2:before {
+	content: "\e251";
+}
+.com-apps-container .icon-link:before {
+	content: "\e252";
+}
+.com-apps-container .icon-picture:before,
+.com-apps-container .icon-image:before {
+	content: "\2f";
+}
+.com-apps-container .icon-pictures:before,
+.com-apps-container .icon-images:before {
+	content: "\30";
+}
+.com-apps-container .icon-palette:before,
+.com-apps-container .icon-color-palette:before {
+	content: "\e014";
+}
+.com-apps-container .icon-camera:before {
+	content: "\55";
+}
+.com-apps-container .icon-camera-2:before,
+.com-apps-container .icon-video:before {
+	content: "\e015";
+}
+.com-apps-container .icon-play-2:before,
+.com-apps-container .icon-video-2:before,
+.com-apps-container .icon-youtube:before {
+	content: "\56";
+}
+.com-apps-container .icon-music:before {
+	content: "\57";
+}
+.com-apps-container .icon-user:before {
+	content: "\22";
+}
+.com-apps-container .icon-users:before {
+	content: "\e01f";
+}
+.com-apps-container .icon-vcard:before {
+	content: "\6d";
+}
+.com-apps-container .icon-address:before {
+	content: "\70";
+}
+.com-apps-container .icon-share-alt:before,
+.com-apps-container .icon-out:before {
+	content: "\26";
+}
+.com-apps-container .icon-enter:before {
+	content: "\e257";
+}
+.com-apps-container .icon-exit:before {
+	content: "\e258";
+}
+.com-apps-container .icon-comment:before,
+.com-apps-container .icon-comments:before {
+	content: "\24";
+}
+.com-apps-container .icon-comments-2:before {
+	content: "\25";
+}
+.com-apps-container .icon-quote:before,
+.com-apps-container .icon-quotes-left:before {
+	content: "\60";
+}
+.com-apps-container .icon-quote-2:before,
+.com-apps-container .icon-quotes-right:before {
+	content: "\61";
+}
+.com-apps-container .icon-quote-3:before,
+.com-apps-container .icon-bubble-quote:before {
+	content: "\e259";
+}
+.com-apps-container .icon-phone:before {
+	content: "\e260";
+}
+.com-apps-container .icon-phone-2:before {
+	content: "\e261";
+}
+.com-apps-container .icon-envelope:before,
+.com-apps-container .icon-mail:before {
+	content: "\4d";
+}
+.com-apps-container .icon-envelope-opened:before,
+.com-apps-container .icon-mail-2:before {
+	content: "\4e";
+}
+.com-apps-container .icon-unarchive:before,
+.com-apps-container .icon-drawer:before {
+	content: "\4f";
+}
+.com-apps-container .icon-archive:before,
+.com-apps-container .icon-drawer-2:before {
+	content: "\50";
+}
+.com-apps-container .icon-briefcase:before {
+	content: "\e020";
+}
+.com-apps-container .icon-tag:before {
+	content: "\e262";
+}
+.com-apps-container .icon-tag-2:before {
+	content: "\e263";
+}
+.com-apps-container .icon-tags:before {
+	content: "\e264";
+}
+.com-apps-container .icon-tags-2:before {
+	content: "\e265";
+}
+.com-apps-container .icon-options:before,
+.com-apps-container .icon-cog:before {
+	content: "\38";
+}
+.com-apps-container .icon-cogs:before {
+	content: "\37";
+}
+.com-apps-container .icon-screwdriver:before,
+.com-apps-container .icon-tools:before {
+	content: "\36";
+}
+.com-apps-container .icon-wrench:before {
+	content: "\3a";
+}
+.com-apps-container .icon-equalizer:before {
+	content: "\39";
+}
+.com-apps-container .icon-dashboard:before {
+	content: "\78";
+}
+.com-apps-container .icon-switch:before {
+	content: "\e266";
+}
+.com-apps-container .icon-filter:before {
+	content: "\54";
+}
+.com-apps-container .icon-purge:before,
+.com-apps-container .icon-trash:before {
+	content: "\4c";
+}
+.com-apps-container .icon-checkedout:before,
+.com-apps-container .icon-lock:before,
+.com-apps-container .icon-locked:before {
+	content: "\23";
+}
+.com-apps-container .icon-unlock:before {
+	content: "\e267";
+}
+.com-apps-container .icon-key:before {
+	content: "\5f";
+}
+.com-apps-container .icon-support:before {
+	content: "\46";
+}
+.com-apps-container .icon-database:before {
+	content: "\62";
+}
+.com-apps-container .icon-scissors:before {
+	content: "\e268";
+}
+.com-apps-container .icon-health:before {
+	content: "\6a";
+}
+.com-apps-container .icon-wand:before {
+	content: "\6b";
+}
+.com-apps-container .icon-eye-open:before,
+.com-apps-container .icon-eye:before {
+	content: "\3c";
+}
+.com-apps-container .icon-eye-close:before,
+.com-apps-container .icon-eye-blocked:before,
+.com-apps-container .icon-eye-2:before {
+	content: "\e269";
+}
+.com-apps-container .icon-clock:before {
+	content: "\6e";
+}
+.com-apps-container .icon-compass:before {
+	content: "\6f";
+}
+.com-apps-container .icon-broadcast:before,
+.com-apps-container .icon-connection:before,
+.com-apps-container .icon-wifi:before {
+	content: "\e01b";
+}
+.com-apps-container .icon-book:before {
+	content: "\e271";
+}
+.com-apps-container .icon-lightning:before,
+.com-apps-container .icon-flash:before {
+	content: "\79";
+}
+.com-apps-container .icon-print:before,
+.com-apps-container .icon-printer:before {
+	content: "\e013";
+}
+.com-apps-container .icon-feed:before {
+	content: "\71";
+}
+.com-apps-container .icon-calendar:before {
+	content: "\43";
+}
+.com-apps-container .icon-calendar-2:before {
+	content: "\44";
+}
+.com-apps-container .icon-calendar-3:before {
+	content: "\e273";
+}
+.com-apps-container .icon-pie:before {
+	content: "\77";
+}
+.com-apps-container .icon-bars:before {
+	content: "\76";
+}
+.com-apps-container .icon-chart:before {
+	content: "\75";
+}
+.com-apps-container .icon-power-cord:before {
+	content: "\32";
+}
+.com-apps-container .icon-cube:before {
+	content: "\33";
+}
+.com-apps-container .icon-puzzle:before {
+	content: "\34";
+}
+.com-apps-container .icon-attachment:before,
+.com-apps-container .icon-paperclip:before,
+.com-apps-container .icon-flag-2:before {
+	content: "\72";
+}
+.com-apps-container .icon-lamp:before {
+	content: "\74";
+}
+.com-apps-container .icon-pin:before,
+.com-apps-container .icon-pushpin:before {
+	content: "\73";
+}
+.com-apps-container .icon-location:before {
+	content: "\63";
+}
+.com-apps-container .icon-shield:before {
+	content: "\e274";
+}
+.com-apps-container .icon-flag:before {
+	content: "\35";
+}
+.com-apps-container .icon-flag-3:before {
+	content: "\e275";
+}
+.com-apps-container .icon-bookmark:before {
+	content: "\e023";
+}
+.com-apps-container .icon-bookmark-2:before {
+	content: "\e276";
+}
+.com-apps-container .icon-heart:before {
+	content: "\e277";
+}
+.com-apps-container .icon-heart-2:before {
+	content: "\e278";
+}
+.com-apps-container .icon-thumbs-up:before {
+	content: "\5b";
+}
+.com-apps-container .icon-thumbs-down:before {
+	content: "\5c";
+}
+.com-apps-container .icon-unfeatured:before,
+.com-apps-container .icon-asterisk:before,
+.com-apps-container .icon-star-empty:before {
+	content: "\40";
+}
+.com-apps-container .icon-star-2:before {
+	content: "\41";
+}
+.com-apps-container .icon-featured:before,
+.com-apps-container .icon-default:before,
+.com-apps-container .icon-star:before {
+	content: "\42";
+}
+.com-apps-container .icon-smiley:before,
+.com-apps-container .icon-smiley-happy:before {
+	content: "\e279";
+}
+.com-apps-container .icon-smiley-2:before,
+.com-apps-container .icon-smiley-happy-2:before {
+	content: "\e280";
+}
+.com-apps-container .icon-smiley-sad:before {
+	content: "\e281";
+}
+.com-apps-container .icon-smiley-sad-2:before {
+	content: "\e282";
+}
+.com-apps-container .icon-smiley-neutral:before {
+	content: "\e283";
+}
+.com-apps-container .icon-smiley-neutral-2:before {
+	content: "\e284";
+}
+.com-apps-container .icon-cart:before {
+	content: "\e019";
+}
+.com-apps-container .icon-basket:before {
+	content: "\e01a";
+}
+.com-apps-container .icon-credit:before {
+	content: "\e286";
+}
+.com-apps-container .icon-credit-2:before {
+	content: "\e287";
+}
+.com-apps-container .icon-edit:before {
+	color: #2f96b4;
+}
+.com-apps-container .icon-publish:before,
+.com-apps-container .icon-save:before,
+.com-apps-container .icon-ok:before,
+.com-apps-container .icon-save-new:before,
+.com-apps-container .icon-save-copy:before,
+.com-apps-container .btn-toolbar .icon-copy:before {
+	color: #51a351;
+}
+.com-apps-container .icon-unpublish:before,
+.com-apps-container .icon-not-ok:before,
+.com-apps-container .icon-eye-close:before,
+.com-apps-container .icon-ban-circle:before,
+.com-apps-container .icon-minus-sign:before,
+.com-apps-container .btn-toolbar .icon-cancel:before {
+	color: #bd362f;
+}
+.com-apps-container .icon-featured:before,
+.com-apps-container .icon-default:before,
+.com-apps-container .icon-pending:before {
+	color: #f89406;
+}
+
+.com-apps-container .thumbnails .item h4{
+	font-size: 14px;
+}
+
+.com-apps-container .item-info-container .control-group .control-label {
+	float: left;
+}
+
+.list-container .thumbnails .item {
+	height: 90px;
+}
+
+.list-container .thumbnails .item h4{
+	font-size: 14px;
+}
+
+.list-container .thumbnails .item .item-description{
+	border-right:1px solid #ccc;
+}
+
+.list-container .thumbnails .item .item-icons{
+	border-left: none;
+	padding: 5px;
+}
+
+.list-container li, .com-apps-container li {
+	padding: 0px;
+}
+.com-apps-container h3 {
+	font-size: 18px;
+}
+.com-apps-container .rating [class^="icon-"], .com-apps-container .rating [class*=" icon-"] {
+	background: none;
+}
+.com-apps-container #filter-bar input, .com-apps-container #filter-bar select, .com-apps-container #filter-bar button {
+	font-size: small;
+}
+.com-apps-container .grid-container .thumbnail {
+	text-align: center;
+}
+.com-apps-container #filter-bar {
+	width: 100%;
+}

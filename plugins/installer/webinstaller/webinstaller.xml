@@ -2,18 +2,21 @@
 <extension version="3.2" type="plugin" group="installer" method="upgrade">
 	<name>plg_installer_webinstaller</name>
 	<author>Joomla! Project</author>
-	<creationDate>18 December 2013</creationDate>
+	<creationDate>21 December 2013</creationDate>
 	<copyright>Copyright (C) 2013 Open Source Matters. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>
-	<version>1.0.5</version>
+	<version>1.1.0</version>
 	<description>PLG_INSTALLER_WEBINSTALLER_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="webinstaller">webinstaller.php</filename>
 		<filename>index.html</filename>
-		<folder>js</folder>
 		<folder>css</folder>
+		<folder>fonts</folder>
+		<folder>img</folder>
+		<folder>js</folder>
+		<folder>less</folder>
 	</files>
 	<scriptfile>webinstaller.script.php</scriptfile>
 	<updateservers>
