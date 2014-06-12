@@ -24,7 +24,7 @@ if (version_compare(JVERSION, '3.0', '<')) {
  */
 class PlgInstallerWebinstaller extends JPlugin
 {
-	public $appsBaseUrl = 'http://appscdn.joomla.org/webapps/';	// will be https once CDN is setup for SSL
+	public $appsBaseUrl = '//appscdn.joomla.org/webapps/';
 
 	private $_hathor = null;
 	private $_installfrom = null;
