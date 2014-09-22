@@ -24,7 +24,7 @@ if (version_compare(JVERSION, '3.0', '<')) {
  */
 class PlgInstallerWebinstaller extends JPlugin
 {
-	public $appsBaseUrl = '//appscdn.joomla.org/webapps/';
+	public $appsBaseUrl = 'https://appscdn.joomla.org/webapps/';
 
 	private $_hathor = null;
 	private $_installfrom = null;
