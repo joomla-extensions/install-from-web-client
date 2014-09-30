@@ -15,6 +15,8 @@ if (version_compare(JVERSION, '3.0', '<')) {
 	$document->addScript(JURI::root() . "plugins/installer/webinstaller/js/jquery-migrate.min.js");
 }
 
+JLoader::import('joomla.environment.browser');
+
 /**
  * Support for the "Install from Web" tab
  *
@@ -30,6 +32,13 @@ class PlgInstallerWebinstaller extends JPlugin
 	private $_installfrom = null;
 	private $_j25 = null;
 	private $_rtl = null;
+	
+	public function __construct (&$subject, $config = array())
+	{
+		parent::__construct($subject, $config);
+
+		$this->appsBaseUrl = (JBrowser::getInstance()->isSSLConnection() ? "https" : "http") . '://appscdn.joomla.org/webapps/';
+	}
 
 	public function onInstallerBeforeDisplay(&$showJedAndWebInstaller)
 	{
