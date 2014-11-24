@@ -162,7 +162,9 @@ jQuery(document).ready(function() {
 	
 		if (apps_installfrom_url == '' && localStorage.getItem('tab-href') == '#web')
 		{
-			jQuery('#myTabTabs li').parent().find('li').removeClass("active");
+			jQuery('#myTabTabs ul>li').each(function(index, value){
+				value.removeClass('active');
+			});
 			jQuery(eventpoint).addClass('active');
 			window.localStorage.setItem('tab-href', jQuery(eventpoint).children('a').attr('href'));
 			if (jQuery(eventpoint).children('a').attr('href') == '#web')
