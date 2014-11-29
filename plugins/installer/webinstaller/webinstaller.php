@@ -172,6 +172,13 @@ jQuery(document).ready(function() {
 				jQuery(eventpoint).click();
 			}
 		}
+		
+		jQuery('a[data-toggle="tab"]').on('shown', function (e) {
+			var target = jQuery(e.target).attr("href");
+			if ((target != '#web')) {
+				jQuery('#appsloading').hide();
+			}
+		});
 	}
 });
 
