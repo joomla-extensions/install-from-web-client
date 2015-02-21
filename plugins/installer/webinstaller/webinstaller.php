@@ -33,9 +33,6 @@ class PlgInstallerWebinstaller extends JPlugin
 	private $_j25         = null;
 	private $_rtl         = null;
 
-	public function __consturct()
-	
-
 	public function onInstallerBeforeDisplay(&$showJedAndWebInstaller)
 	{
 		$showJedAndWebInstaller = false;
