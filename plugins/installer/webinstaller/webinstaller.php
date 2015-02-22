@@ -3,7 +3,7 @@
  * @package     Joomla.Plugin
  * @subpackage  Installer.webinstaller
  *
- * @copyright   Copyright (C) 2013 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C)  2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -37,7 +37,7 @@ class PlgInstallerWebinstaller extends JPlugin
 	{
 		$showJedAndWebInstaller = false;
 	}
-	
+
 	public function onInstallerViewBeforeFirstTab()
 	{
 		JFactory::getLanguage()->load('plg_installer_webinstaller', JPATH_ADMINISTRATOR);
@@ -47,7 +47,7 @@ class PlgInstallerWebinstaller extends JPlugin
 			$this->getChanges();
 		}
 	}
-	
+
 	public function onInstallerViewAfterLastTab()
 	{
 		if ($this->params->get('tab_position', 0))
@@ -182,11 +182,10 @@ jQuery(document).ready(function() {
 	}
 });
 
-		
 END;
 		$document->addScriptDeclaration($javascript);
 	}
-	
+
 	private function isJ25()
 	{
 		if (is_null($this->_j25))
@@ -196,7 +195,7 @@ END;
 
 		return $this->_j25;
 	}
-	
+
 	private function isHathor()
 	{
 		if (is_null($this->_hathor))
@@ -226,13 +225,13 @@ END;
 
 		return $this->_rtl;
 	}
-	
+
 	private function getInstallFrom()
 	{
 		if (is_null($this->_installfrom))
 		{
 			$installfrom = base64_decode(JFactory::getApplication()->input->get('installfrom', '', 'base64'));
-	
+
 			if ($this->isJ25())
 			{
 				JFormHelper::loadRuleClass('url');
@@ -259,7 +258,7 @@ END;
 
 		return $this->_installfrom;
 	}
-	
+
 	private function getChanges()
 	{
 		$ishathor      = $this->isHathor() ? 1 : 0;
@@ -323,7 +322,7 @@ END;
 						<a class="close" data-dismiss="alert">×</a><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_LOADING_ERROR'); ?>
 					</div>
 				</div>
-	
+
 				<fieldset class="uploadform" id="uploadform-web" style="display:none"<?php echo $dir; ?>>
 					<div class="control-group">
 						<strong><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_CONFIRM'); ?></strong><br />
@@ -335,7 +334,6 @@ END;
 						<input type="button" class="btn btn-secondary" value="<?php echo JText::_('JCANCEL'); ?>" onclick="Joomla.installfromwebcancel()" />
 					</div>
 				</fieldset>
-
 <?php
 			echo JHtml::_('bootstrap.endTab');
 		}
