@@ -11,12 +11,8 @@
 	<description>PLG_INSTALLER_WEBINSTALLER_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="webinstaller">webinstaller.php</filename>
-		<filename>index.html</filename>
 		<folder>css</folder>
-		<folder>fonts</folder>
-		<folder>img</folder>
 		<folder>js</folder>
-		<folder>less</folder>
 	</files>
 	<scriptfile>webinstaller.script.php</scriptfile>
 	<updateservers>
