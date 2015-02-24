@@ -205,6 +205,8 @@ END;
 
 		if ($ishathor)
 		{
+			JHtml::_('jquery.framework');
+-			echo '<div class="clr"></div>';
 ?>
 			<fieldset class="uploadform">
 				<legend><?php echo JText::_('COM_INSTALLER_INSTALL_FROM_WEB', true); ?></legend>
