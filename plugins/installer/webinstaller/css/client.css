@@ -196,6 +196,12 @@ div.item-description {
 
 }
 
+/* Fixes images which are too big */
+.com-apps-container .thumbnail .item-image img {
+	max-width: 100%;
+	max-height: 90%;
+}
+
 /* This is where the single column view starts */
 @media (max-width: 768px) {
     .com-apps-container select {
