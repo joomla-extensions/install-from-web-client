@@ -23,7 +23,7 @@ class plginstallerwebinstallerInstallerScript
             $db = JFactory::getDbo();
             $query = $db->getQuery(true);
             $query->update($db->quoteName('#__extensions'))
-                ->set($db->quoteName('enabled') ' = 1')
+                ->set($db->quoteName('enabled') . ' = 1')
                 ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
                 ->where($db->quoteName('element') . ' = ' . $db->quote('webinstaller'));
             $db->setQuery($query);
