@@ -210,20 +210,16 @@ Joomla.apps.initialize = function() {
 	Joomla.apps.loaded = 1;
 	if (jQuery('#myTabContent').length) {
 		jQuery('<div id="appsloading"></div>')
-			.css("background", "rgba(255, 255, 255, .8) url('../media/jui/img/ajax-loader.gif') 50% 15% no-repeat")
 			.css("top", jQuery('#myTabContent').position().top - jQuery(window).scrollTop())
 			.css("left", jQuery('#myTabContent').position().left - jQuery(window).scrollLeft())
 			.css("width", jQuery('#myTabContent').width())
 			.css("height", jQuery('#myTabContent').height())
-			.css("position", "fixed")
-			.css("z-index", "1000")
-			.css("opacity", "0.80")
-			.css("-ms-filter", "progid:DXImageTransform.Microsoft.Alpha(Opacity = 80)")
-			.css("filter", "alpha(opacity = 80)")
 			.appendTo('#myTabContent');
 		jQuery('#appsloading').ajaxStart(function() {
+			jQuery('body').addClass('ifw-busy');
 			jQuery(this).show();
 		}).ajaxStop(function() {
+			jQuery('body').removeClass('ifw-busy');
 			jQuery(this).hide();
 		});
 	}
