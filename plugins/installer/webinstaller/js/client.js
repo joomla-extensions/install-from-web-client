@@ -214,7 +214,7 @@ Joomla.apps.initialize = function() {
 			.css("left", jQuery('#myTabContent').position().left - jQuery(window).scrollLeft())
 			.css("width", jQuery('#myTabContent').width())
 			.css("height", jQuery('#myTabContent').height())
-			.appendTo('#myTabContent');
+			.appendTo('#myTabContent #web');
 		jQuery('#appsloading').ajaxStart(function() {
 			jQuery('body').addClass('ifw-busy');
 			jQuery(this).show();
