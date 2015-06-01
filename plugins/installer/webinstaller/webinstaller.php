@@ -3,7 +3,7 @@
  * @package     Joomla.Plugin
  * @subpackage  Installer.webinstaller
  *
- * @copyright   Copyright (C) 2013 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -12,64 +12,64 @@ defined('_JEXEC') or die;
 /**
  * Support for the "Install from Web" tab
  *
- * @package     Joomla.Plugin
- * @subpackage  System.webinstaller
- * @since       3.2
+ * @since   1.0.0
  */
 class PlgInstallerWebinstaller extends JPlugin
 {
-	public $appsBaseUrl = 'https://appscdn.joomla.org/webapps/';
-
-	private $_hathor = null;
+	public $appsBaseUrl   = 'https://appscdn.joomla.org/webapps/';
+	private $_hathor      = null;
 	private $_installfrom = null;
-	private $_rtl = null;
+	private $_rtl         = null;
 
 	public function onInstallerBeforeDisplay(&$showJedAndWebInstaller)
 	{
 		$showJedAndWebInstaller = false;
 	}
-	
+
 	public function onInstallerViewBeforeFirstTab()
 	{
-		$app = JFactory::getApplication();
- 
+		$app  = JFactory::getApplication();
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_installer_webinstaller', JPATH_ADMINISTRATOR);
-		if (!$this->params->get('tab_position', 0)) {
+
+		if (!$this->params->get('tab_position', 0))
+		{
 			$this->getChanges();
 		}
 	}
-	
+
 	public function onInstallerViewAfterLastTab()
 	{
-		if ($this->params->get('tab_position', 0)) {
+		if ($this->params->get('tab_position', 0))
+		{
 			$this->getChanges();
 		}
-		$ishathor = $this->isHathor() ? 1 : 0;
-		$installfrom = $this->getInstallFrom();
+
+		$ishathor      = $this->isHathor() ? 1 : 0;
+		$installfrom   = $this->getInstallFrom();
 		$installfromon = $installfrom ? 1 : 0;
 
 		$document = JFactory::getDocument();
-		$ver = new JVersion;
-		$min = JFactory::getConfig()->get('debug') ? '' : '.min';
+		$ver      = new JVersion;
+		$min      = JFactory::getConfig()->get('debug') ? '' : '.min';
 
 		$document->addScript(JURI::root() . 'plugins/installer/webinstaller/js/client' . $min . '.js?jversion=' . JVERSION);
 		$document->addStyleSheet(JURI::root() . 'plugins/installer/webinstaller/css/client' . $min . '.css?jversion=' . JVERSION);
 
 		$installer = new JInstaller();
-		$manifest = $installer->isManifest(JPATH_PLUGINS . DIRECTORY_SEPARATOR . 'installer' . DIRECTORY_SEPARATOR . 'webinstaller' . DIRECTORY_SEPARATOR . 'webinstaller.xml');
+		$manifest  = $installer->isManifest(JPATH_PLUGINS . '/installer/webinstaller/webinstaller.xml');
 
-		$apps_base_url = addslashes($this->appsBaseUrl);
-		$apps_installat_url = base64_encode(JURI::current(true) . '?option=com_installer&view=install');
+		$apps_base_url        = addslashes($this->appsBaseUrl);
+		$apps_installat_url   = base64_encode(JURI::current(true) . '?option=com_installer&view=install');
 		$apps_installfrom_url = addslashes($installfrom);
-		$apps_product = base64_encode($ver->PRODUCT);
-		$apps_release = base64_encode($ver->RELEASE);
-		$apps_dev_level = base64_encode($ver->DEV_LEVEL);
-		$btntxt = JText::_('COM_INSTALLER_MSG_INSTALL_ENTER_A_URL', true);
-		$pv = base64_encode($manifest->version);
-		$updatestr1 = JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_UPDATE_AVAILABLE', true);
-		$obsoletestr = JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_OBSOLETE', true);
-		$updatestr2 = JText::_('JLIB_INSTALLER_UPDATE', true);
+		$apps_product         = base64_encode($ver->PRODUCT);
+		$apps_release         = base64_encode($ver->RELEASE);
+		$apps_dev_level       = base64_encode($ver->DEV_LEVEL);
+		$btntxt               = JText::_('COM_INSTALLER_MSG_INSTALL_ENTER_A_URL', true);
+		$pv                   = base64_encode($manifest->version);
+		$updatestr1           = JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_UPDATE_AVAILABLE', true);
+		$obsoletestr          = JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_OBSOLETE', true);
+		$updatestr2           = JText::_('JLIB_INSTALLER_UPDATE', true);
 
 		$javascript = <<<END
 apps_base_url = '$apps_base_url';
@@ -139,7 +139,6 @@ jQuery(document).ready(function() {
 	}
 });
 
-		
 END;
 		$document->addScriptDeclaration($javascript);
 	}
@@ -148,8 +147,9 @@ END;
 	{
 		if (is_null($this->_hathor))
 		{
-			$app = JFactory::getApplication();
+			$app          = JFactory::getApplication();
 			$templateName = strtolower($app->getTemplate());
+
 			if ($templateName == 'hathor')
 			{
 				$this->_hathor = true;
@@ -159,55 +159,64 @@ END;
 				$this->_hathor = false;
 			}
 		}
+
 		return $this->_hathor;
 	}
 
-	private function isRTL() {
-		if (is_null($this->_rtl)) {
-			$document = JFactory::getDocument();
+	private function isRTL()
+	{
+		if (is_null($this->_rtl))
+		{
+			$document   = JFactory::getDocument();
 			$this->_rtl = strtolower($document->direction) == 'rtl' ? 1 : 0;
 		}
+
 		return $this->_rtl;
 	}
-	
+
 	private function getInstallFrom()
 	{
 		if (is_null($this->_installfrom))
 		{
-			$app = JFactory::getApplication();
+			$app         = JFactory::getApplication();
 			$installfrom = base64_decode($app->input->get('installfrom', '', 'base64'));
 
 			$field = new SimpleXMLElement('<field></field>');
-			$rule = new JFormRuleUrl;
-			if ($rule->test($field, $installfrom) && preg_match('/\.xml\s*$/', $installfrom)) {
+			$rule  = new JFormRuleUrl;
+
+			if ($rule->test($field, $installfrom) && preg_match('/\.xml\s*$/', $installfrom))
+			{
 				jimport('joomla.updater.update');
 				$update = new JUpdate;
 				$update->loadFromXML($installfrom);
 				$package_url = trim($update->get('downloadurl', false)->_data);
-				if ($package_url) {
+
+				if ($package_url)
+				{
 					$installfrom = $package_url;
 				}
 			}
 			$this->_installfrom = $installfrom;
 		}
+
 		return $this->_installfrom;
 	}
-	
+
 	private function getChanges()
 	{
-		$ishathor = $this->isHathor() ? 1 : 0;
-		$installfrom = $this->getInstallFrom();
+		$ishathor      = $this->isHathor() ? 1 : 0;
+		$installfrom   = $this->getInstallFrom();
 		$installfromon = $installfrom ? 1 : 0;
 		$dir = '';
-		if ($this->isRTL()) {
+		if ($this->isRTL())
+		{
 			$dir = ' dir="ltr"';
 		}
 
 		if ($ishathor)
 		{
 			JHtml::_('jquery.framework');
-			echo '<div class="clr"></div>';
-?>
+			echo '<div class="clr"></div>'; ?>
 			<fieldset class="uploadform">
 				<legend><?php echo JText::_('COM_INSTALLER_INSTALL_FROM_WEB', true); ?></legend>
 				<div id="jed-container"<?php echo $dir; ?>>
@@ -247,7 +256,7 @@ END;
 						<a class="close" data-dismiss="alert">×</a><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_LOADING_ERROR'); ?>
 					</div>
 				</div>
-	
+
 				<fieldset class="uploadform" id="uploadform-web" style="display:none"<?php echo $dir; ?>>
 					<div class="control-group">
 						<strong><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_CONFIRM'); ?></strong><br />
