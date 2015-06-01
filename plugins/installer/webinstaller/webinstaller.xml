@@ -13,10 +13,7 @@
 	<files>
 		<filename plugin="webinstaller">webinstaller.php</filename>
 		<folder>css</folder>
-		<folder>fonts</folder>
-		<folder>img</folder>
 		<folder>js</folder>
-		<folder>less</folder>
 	</files>
 	<config>
 		<fields name="params">
