@@ -216,11 +216,11 @@ Joomla.apps.initialize = function() {
 			.css("height", jQuery('#myTabContent').height())
 			.appendTo('#myTabContent #web');
 		jQuery('#appsloading').ajaxStart(function() {
-			jQuery('body').addClass('ifw-busy');
 			jQuery(this).show();
+			jQuery('body').addClass('ifw-busy');
 		}).ajaxStop(function() {
-			jQuery('body').removeClass('ifw-busy');
 			jQuery(this).hide();
+			jQuery('body').removeClass('ifw-busy');
 		});
 	}
 

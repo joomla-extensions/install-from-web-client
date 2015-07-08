@@ -84,8 +84,7 @@ apps_btntxt = '$btntxt',
 apps_pv = '$pv',
 apps_updateavail1 = '$updatestr1',
 apps_updateavail2 = '$updatestr2',
-apps_obsolete = '$obsoletestr',
-apps_j25 = $j25;
+apps_obsolete = '$obsoletestr';
 
 jQuery(document).ready(function() {
 	if (apps_installfromon)
