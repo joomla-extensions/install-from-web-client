@@ -59,7 +59,7 @@ Joomla.loadweb = function(url) {
 				if (response.data.pluginuptodate == 0) {
 					txt = apps_updateavail1;
 				}
-				if (apps_j25 || apps_is_hathor) {
+				if (apps_is_hathor) {
 					jQuery('#element-box').prepend(jQuery('<dl id="system-message"><dt class="info">info</dt><dd class="info message"><ul><li>'+txt+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="btn" type="button" value="'+btn+'" onclick="Joomla.submitbuttonInstallWebInstaller()" /></li></ul></dd></dl>'));
 				}
 				else {
