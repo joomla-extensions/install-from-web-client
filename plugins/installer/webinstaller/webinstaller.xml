@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.2" type="plugin" group="installer" method="upgrade">
+<extension version="3.3" type="plugin" group="installer" method="upgrade">
 	<name>plg_installer_webinstaller</name>
 	<author>Joomla! Project</author>
-	<creationDate>21 December 2013</creationDate>
-	<copyright>Copyright (C) 2013 Open Source Matters. All rights reserved.</copyright>
+	<creationDate>5 August 2015</creationDate>
+	<copyright>Copyright (C) 2015 Open Source Matters. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>
-	<version>1.1.0</version>
+	<version>2.0.0</version>
 	<description>PLG_INSTALLER_WEBINSTALLER_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="webinstaller">webinstaller.php</filename>
-		<folder>css</folder>
-		<folder>js</folder>
+		<filename>index.html</filename>
+		<folder>layouts</folder>
+		<folder>language</folder>
 	</files>
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_installer_webinstaller.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_installer_webinstaller.sys.ini</language>
+    </languages>
+
+    <!-- Media files -->
+    <media destination="plg_installer_webinstaller" folder="media">
+        <folder>js</folder>
+        <folder>css</folder>
+    </media>
+
 	<scriptfile>webinstaller.script.php</scriptfile>
 	<updateservers>
 		<server type="extension" priority="1" name="WebInstaller Update Site">http://appscdn.joomla.org/webapps/jedapps/webinstaller.xml</server>
 	</updateservers>
 	<config>
 		<fields name="params">
-
 			<fieldset name="basic">
 				<field name="tab_position" type="radio"
 					class="btn-group"
@@ -31,8 +42,29 @@
 					<option value="0">PLG_INSTALLER_WEBINSTALLER_TAB_POSITION_FIRST</option>
 					<option value="1">PLG_INSTALLER_WEBINSTALLER_TAB_POSITION_LAST</option>
 				</field>
-			</fieldset>
 
+				<field name="timeout" type="text"
+						  class="btn-group"
+						  default="60"
+						  description="PLG_INSTALLER_WEBINSTALLER_TIMEOUT_DESC"
+						  label="PLG_INSTALLER_WEBINSTALLER_TAB_TIMEOUT_LABEL"
+				/>
+				<field name="items_per_request" type="list"
+					   class="btn-group"
+					   default="36"
+					   description="PLG_INSTALLER_WEBINSTALLER_ITEMS_PER_REQUEST_DESC"
+					   label="PLG_INSTALLER_WEBINSTALLER_ITEMS_PER_REQUEST_LABEL"
+						>
+					<option value="12">12</option>
+					<option value="24">24</option>
+					<option value="36">36</option>
+					<option value="48">48</option>
+					<option value="60">60</option>
+					<option value="72">72</option>
+					<option value="84">84</option>
+					<option value="96">96</option>
+				</field>
+			</fieldset>
 		</fields>
 	</config>
 </extension>

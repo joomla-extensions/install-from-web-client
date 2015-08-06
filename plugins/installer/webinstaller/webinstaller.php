@@ -18,251 +18,544 @@ defined('_JEXEC') or die;
  */
 class PlgInstallerWebinstaller extends JPlugin
 {
-	public $appsBaseUrl = 'https://appscdn.joomla.org/webapps/';
+	/*
+	 * The main url to connect to
+	 */
+	private $directoryServer = 'extensions.joomla.org';
 
-	private $_hathor = null;
-	private $_installfrom = null;
-	private $_rtl = null;
+	/*
+	 * The component we call
+	 */
+	private $directoryComponent = 'com_jed';
 
+	/*
+	 * Name of the category view
+	 */
+	private $directoryCategoryView = 'category';
+
+	/*
+	 * Name of the extension view
+	 */
+	private $directoryExtensionView = 'extension';
+
+	/**
+	 * Constructor
+	 *
+	 * @param   object  &$subject  The object to observe
+	 * @param   array   $config    An optional associative array of configuration settings.
+	 *
+	 * @since   1.5
+	 */
+	public function __construct(&$subject, $config = array())
+	{
+		parent::__construct($subject, $config);
+
+		$lang = JFactory::getLanguage();
+		$lang->load('plg_installer_webinstaller', JPATH_ADMINISTRATOR);
+	}
+
+	/**
+	 * get the categories, it saved the category data in the session to speed up things
+	 *
+	 * @return JHttpResponse
+	 */
+	private function getCategories ()
+	{
+		$app = JFactory::getApplication();
+
+		$categories = $app->setUserState('jedcategories', null);
+
+		if (! is_null($categories))
+		{
+			//return $categories;
+		}
+
+		$dirUrl = $this->getDirectoryBaseUrl();
+		$dirUrl->setvar('view', $this->directoryCategoryView);
+		$dirUrl->setvar('layout', 'list');
+		$dirUrl->setvar('format', 'json');
+		$dirUrl->setvar('order', 'ordering');
+		$dirUrl->setvar('limit', -1);
+
+		$http   = $this->getDirectoryConnection();
+		$result = $http->get($dirUrl);
+
+		$categories = json_decode($result->body, true);
+		$newCategories = array();
+
+		// Reformat the array for easier access
+		foreach ($categories as $category)
+		{
+			$cat = array();
+
+			if ($category['level']['value'] != 0)
+			{
+				$cat['level']     = $category['level']['value'];
+				$cat['parent_id'] = $category['parent_id']['value'];
+				$cat['title']     = $category['title']['value'];
+				$cat['id']        = $category['id']['value'];
+
+				$newCategories[$cat['id']] = $cat;
+
+				if ($cat['level'] > 1)
+				{
+					$children = array();
+
+					if (array_key_exists('children', $newCategories[$cat['parent_id']]))
+					{
+						$children = $newCategories[$cat['parent_id']]['children'];
+					}
+
+					$children[] = $cat['id'];
+					$newCategories[$cat['parent_id']]['children'] = $children;
+				}
+			}
+		}
+
+		$app->setUserState('jedcategories', $newCategories);
+
+		return $newCategories;
+	}
+
+	/**
+	 * Get Extensions from the directory
+	 *
+	 * @param   integer  $jedcatid  jed core category
+	 *
+	 * @return JHttpResponse
+	 */
+	private function getExtensions ($jedcatid=null)
+	{
+		$app   = JFactory::getApplication();
+		$input = $app->input;
+
+		$dirUrl = $this->getDirectoryBaseUrl();
+
+		$dirUrl->setvar('view', $this->directoryExtensionView);
+		$dirUrl->setvar('controller', 'filter');
+		$dirUrl->setvar('filter[approved]', '1');
+		$dirUrl->setvar('filter[published]', '1');
+
+		if (! empty($jedcatid))
+		{
+			$dirUrl->setvar('filter[core_catid]', $jedcatid);
+		}
+		else
+		{
+			$dirUrl->setvar('filter[popular]', '1');
+		}
+
+		$dirUrl->setvar('order', $this->getOrdering());
+		$dirUrl->setvar('dir', 'ASC');
+		$dirUrl->setvar('extend', '1');
+		$dirUrl->setvar('limit', $this->getLimit());
+
+		$limitstart = $input->getInt('limitstart', 0);
+
+		$dirUrl->setvar('limitstart', $limitstart);
+
+		$http   = $this->getDirectoryConnection();
+		$result = json_decode($http->get($dirUrl)->body, true);
+
+		return $result;
+	}
+
+	/**
+	 * get Extensions from the directory
+	 *
+	 * @return JHttpResponse
+	 */
+	private function getExtension ()
+	{
+		$id = JFactory::getApplication()->input->get('id', 0);
+
+		if ($id == 0)
+		{
+			return '{}';
+		}
+
+		$dirUrl = $this->getDirectoryBaseUrl();
+		$dirUrl->setvar('view', $this->directoryExtensionView);
+		$dirUrl->setvar('controller', 'filter');
+		$dirUrl->setvar('filter[approved]', '1');
+		$dirUrl->setvar('filter[published]', '1');
+		$dirUrl->setvar('extend', '0');
+		$dirUrl->setvar('filter[id]', $id);
+
+		$http   = $this->getDirectoryConnection();
+		$result = json_decode($http->get($dirUrl)->body, true);
+		$result = $result['data'][0];
+
+		return $result;
+	}
+
+	/**
+	 * get Extensions from the directory
+	 *
+	 * @param   integer  $jedcatid  jed core category
+	 *
+	 * @return JHttpResponse
+	 */
+	private function searchExtensions($jedcatid)
+	{
+		$filter_search = JFactory::getApplication()->input->getString('filter_search', '');
+
+		if ($filter_search == '')
+		{
+			return '{}';
+		}
+
+		$filter_search = implode('+', explode(' ', $filter_search));
+		$dirUrl = $this->getDirectoryBaseUrl();
+		$dirUrl->setvar('view', $this->directoryExtensionView);
+		$dirUrl->setvar('controller', 'filter');
+		$dirUrl->setvar('filter[approved]', '1');
+		$dirUrl->setvar('filter[published]', '1');
+
+		if (! empty($jedcatid))
+		{
+			$dirUrl->setvar('filter[core_catid]', $jedcatid);
+		}
+
+		$dirUrl->setvar('extend', '0');
+		$dirUrl->setvar('searchall', $filter_search);
+
+		$http   = $this->getDirectoryConnection();
+		$result = json_decode($http->get($dirUrl)->body, true);
+
+		return $result;
+	}
+
+	/**
+	 * get the http connection object to the directory
+	 *
+	 * @return JHttp
+	 */
+	private function getDirectoryConnection()
+	{
+		$http = JHttpFactory::getHttp();
+		$http->setOption('timeout', $this->getTimeout());
+
+		return $http;
+	}
+
+	/**
+	 * get the base connection URL
+	 *
+	 * @return JUri
+	 */
+	private function getDirectoryBaseUrl()
+	{
+		$dirUrl = new JUri;
+
+		// Get http(s) from configuration or plugin or request url
+		$dirUrl->setScheme('http');
+		$dirUrl->setHost($this->directoryServer . '/index.php');
+		$dirUrl->setvar('option', $this->directoryComponent);
+		$dirUrl->setvar('format', 'json');
+
+		return $dirUrl;
+	}
+
+	/**
+	 * get the timeout
+	 *
+	 * @return int
+	 */
+	private function getTimeout()
+	{
+		return (int) $this->params->get('timeout', 60);
+	}
+
+	/**
+	 * get the limit per request
+	 *
+	 * @return int
+	 */
+	private function getLimit()
+	{
+		return (int) $this->params->get('limit_per_request', 36);
+	}
+
+	/**
+	 * Get the ordering from the request
+	 *
+	 * @return mixed
+	 *
+	 * @throws Exception
+	 */
+	private function getOrdering()
+	{
+		$input = JFactory::getApplication()->input;
+
+		return $input->get('ordering', 'score');
+	}
+
+	/**
+	 * Do we show the installer button for install from web
+	 *
+	 * @param   boolean  &$showJedAndWebInstaller  show the installer?
+	 *
+	 * @return  void
+	 */
 	public function onInstallerBeforeDisplay(&$showJedAndWebInstaller)
 	{
 		$showJedAndWebInstaller = false;
 	}
-	
+
+	/**
+	 * runs before the first tab at the install screens will get rendered
+	 *
+	 * @return string
+	 */
 	public function onInstallerViewBeforeFirstTab()
 	{
-		$app = JFactory::getApplication();
- 
-		$lang = JFactory::getLanguage();
-		$lang->load('plg_installer_webinstaller', JPATH_ADMINISTRATOR);
-		if (!$this->params->get('tab_position', 0)) {
-			$this->getChanges();
+		if ($this->params->get('tab_position', 0) == 0)
+		{
+			echo $this->execute();
 		}
 	}
-	
+
+	/**
+	 * run after the last tab at the install screens got rendered
+	 *
+	 * @return string
+	 */
 	public function onInstallerViewAfterLastTab()
 	{
-		if ($this->params->get('tab_position', 0)) {
-			$this->getChanges();
-		}
-		$ishathor = $this->isHathor() ? 1 : 0;
-		$installfrom = $this->getInstallFrom();
-		$installfromon = $installfrom ? 1 : 0;
-
-		$document = JFactory::getDocument();
-		$ver = new JVersion;
-		$min = JFactory::getConfig()->get('debug') ? '' : '.min';
-
-		$document->addScript(JURI::root() . 'plugins/installer/webinstaller/js/client' . $min . '.js?jversion=' . JVERSION);
-		$document->addStyleSheet(JURI::root() . 'plugins/installer/webinstaller/css/client' . $min . '.css?jversion=' . JVERSION);
-
-		$installer = new JInstaller();
-		$manifest = $installer->isManifest(JPATH_PLUGINS . DIRECTORY_SEPARATOR . 'installer' . DIRECTORY_SEPARATOR . 'webinstaller' . DIRECTORY_SEPARATOR . 'webinstaller.xml');
-
-		$apps_base_url = addslashes($this->appsBaseUrl);
-		$apps_installat_url = base64_encode(JURI::current(true) . '?option=com_installer&view=install');
-		$apps_installfrom_url = addslashes($installfrom);
-		$apps_product = base64_encode($ver->PRODUCT);
-		$apps_release = base64_encode($ver->RELEASE);
-		$apps_dev_level = base64_encode($ver->DEV_LEVEL);
-		$btntxt = JText::_('COM_INSTALLER_MSG_INSTALL_ENTER_A_URL', true);
-		$pv = base64_encode($manifest->version);
-		$updatestr1 = JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_UPDATE_AVAILABLE', true);
-		$obsoletestr = JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_OBSOLETE', true);
-		$updatestr2 = JText::_('JLIB_INSTALLER_UPDATE', true);
-
-		$javascript = <<<END
-apps_base_url = '$apps_base_url';
-apps_installat_url = '$apps_installat_url';
-apps_installfrom_url = '$apps_installfrom_url';
-apps_product = '$apps_product';
-apps_release = '$apps_release';
-apps_dev_level = '$apps_dev_level';
-apps_is_hathor = $ishathor;
-apps_installfromon = $installfromon;
-apps_btntxt = '$btntxt';
-apps_pv = '$pv';
-apps_updateavail1 = '$updatestr1';
-apps_updateavail2 = '$updatestr2';
-apps_obsolete = '$obsoletestr';
-
-jQuery(document).ready(function() {
-	if (apps_installfromon)
-	{
-		jQuery('#myTabTabs a[href="#web"]').click();
-	}
-	var link = jQuery('#myTabTabs a[href="#web"]').get(0);
-	var eventpoint = jQuery(link).closest('li');
-	if (apps_is_hathor)
-	{
-		jQuery('#mywebinstaller').show();
-		link = jQuery('#mywebinstaller a');
-		eventpoint = link;
-	}
-
-	jQuery(eventpoint).click(function (event){
-		if (!Joomla.apps.loaded) {
-			Joomla.apps.initialize();
-		}
-	});
-	
-	if (apps_installfrom_url != '') {
-		var tag = 'li';
-		if (apps_is_hathor)
+		if ($this->params->get('tab_position', 0) != 0)
 		{
-			tag = 'a';
+			echo $this->execute();
 		}
-		jQuery(link).closest(tag).click();
 	}
 
-	if (!apps_is_hathor)
+	/**
+	 * prepare a breadcrumb date structure
+	 *
+	 * @param   integer  $categoryId  the category we need the breadcrumb for
+	 *
+	 * @return array
+	 */
+	private function prepareBreadcrumb($categoryId = null)
 	{
-		if(typeof jQuery('#myTabTabs a[href="'+localStorage.getItem('tab-href')+'"]').prop('tagName') == 'undefined' ||
-			localStorage.getItem('tab-href') == null ||
-			localStorage.getItem('tab-href') == 'undefined' ||
-			!localStorage.getItem('tab-href')) {
-			window.localStorage.setItem('tab-href', jQuery('#myTabTabs a').get(0).href.replace(/^.+?#/, '#'));
-		}
-	
-		if (apps_installfrom_url == '' && localStorage.getItem('tab-href') == '#web')
+		$items = array();
+
+		$uri  = JUri::getInstance();
+		$link = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port', 'path'));
+
+		$linkbase = $link . '?option=com_installer&view=install';
+
+		// Default view popular extensions
+		$items[] = array('title' => 'PLG_INSTALLER_WEBINSTALLER_DEFAULTCATEGORYNAME', 'link' => $linkbase);
+
+		if (empty($categoryId))
 		{
-			jQuery('#myTabTabs li').each(function(index, value){
-				value.removeClass('active');
-			});
-			jQuery(eventpoint).addClass('active');
-			window.localStorage.setItem('tab-href', jQuery(eventpoint).children('a').attr('href'));
-			if (jQuery(eventpoint).children('a').attr('href') == '#web')
+			return $items;
+		}
+
+		// Default view popular extensions, but we name it different
+		$items   = array();
+		$items[] = array('title' => 'PLG_INSTALLER_WEBINSTALLER_DEFAULTCATEGORYHOME', 'link' => $linkbase);
+
+		$categories = $this->getCategories();
+
+		$path = array();
+		$path[] = $this->parseCategory($path, $categories, $categoryId, $linkbase);
+
+		return array_merge($items, $path);
+	}
+
+	/**
+	 * recursive function to build up a breadcrumb navigation structure
+	 *
+	 * @param   array    &$path       the path
+	 * @param   array    $categories  all categories
+	 * @param   integer  $categoryId  the category id
+	 * @param   string   $linkbase    the base link
+	 *
+	 * @return mixed
+	 */
+	private function parseCategory(&$path, $categories, $categoryId, $linkbase)
+	{
+		if (array_key_exists($categories[$categoryId]['parent_id'], $categories))
+		{
+			$path[] = $this->parseCategory($path, $categories, $categories[$categoryId]['parent_id'], $linkbase);
+		}
+
+		$categories[$categoryId]['link'] = $linkbase . '&jedcatid=' . $categoryId;
+
+		return $categories[$categoryId];
+	}
+
+	/**
+	 * prepares the download link for an extension,
+	 * does check if it is a file and extract data from an xml when needed
+	 *
+	 * @param   array  $data  the jed data
+	 *
+	 * @return array
+	 */
+	private function prepareDownloadInformation($data)
+	{
+		jimport('joomla.updater.update');
+
+		$result = array();
+
+		// We set to false to be save and set it to true if we sure it will work
+		$result['installable'] = false;
+
+		// Check if we have a download integration link
+		$download_integration_url = '';
+
+		if (array_key_exists('download_integration_url', $data))
+		{
+			$download_integration_url = $data['download_integration_url']['value'];
+		}
+
+		if (! array_key_exists('type', $data))
+		{
+			return false;
+		}
+
+		$type = $data['type']['value'];
+
+		$result['installable'] = false;
+
+		if (array_key_exists('download_link', $data))
+		{
+			$result['link'] = $data['download_link']['value'];
+		}
+
+		if (! empty($download_integration_url))
+		{
+			$result['link'] = $download_integration_url;
+
+			// Has it a download integration url and is type == free it has to be installable
+			$result['installable'] = $type == 'free';
+
+			if (preg_match('/\.xml\s*$/', $download_integration_url))
 			{
-				jQuery(eventpoint).click();
-			}
-		}
-	}
-});
-
-		
-END;
-		$document->addScriptDeclaration($javascript);
-	}
-
-	private function isHathor()
-	{
-		if (is_null($this->_hathor))
-		{
-			$app = JFactory::getApplication();
-			$templateName = strtolower($app->getTemplate());
-			if ($templateName == 'hathor')
-			{
-				$this->_hathor = true;
-			}
-			else
-			{
-				$this->_hathor = false;
-			}
-		}
-		return $this->_hathor;
-	}
-
-	private function isRTL() {
-		if (is_null($this->_rtl)) {
-			$document = JFactory::getDocument();
-			$this->_rtl = strtolower($document->direction) == 'rtl' ? 1 : 0;
-		}
-		return $this->_rtl;
-	}
-	
-	private function getInstallFrom()
-	{
-		if (is_null($this->_installfrom))
-		{
-			$app = JFactory::getApplication();
-			$installfrom = base64_decode($app->input->get('installfrom', '', 'base64'));
-
-			$field = new SimpleXMLElement('<field></field>');
-			$rule = new JFormRuleUrl;
-			if ($rule->test($field, $installfrom) && preg_match('/\.xml\s*$/', $installfrom)) {
-				jimport('joomla.updater.update');
 				$update = new JUpdate;
-				$update->loadFromXML($installfrom);
-				$package_url = trim($update->get('downloadurl', false)->_data);
-				if ($package_url) {
-					$installfrom = $package_url;
+				$update->loadFromXML($download_integration_url);
+				$package_url_node = $update->get('downloadurl', false);
+
+				if (isset($package_url_node->_data))
+				{
+					$result['link']        = $package_url_node->_data;
 				}
 			}
-			$this->_installfrom = $installfrom;
 		}
-		return $this->_installfrom;
+
+		$result['type'] = $type;
+
+		return $result;
 	}
-	
-	private function getChanges()
+
+	/**
+	 * execute and do whatever has to be done
+	 *
+	 * @return string
+	 */
+	private function execute()
 	{
-		$ishathor = $this->isHathor() ? 1 : 0;
-		$installfrom = $this->getInstallFrom();
-		$installfromon = $installfrom ? 1 : 0;
-		$dir = '';
-		if ($this->isRTL()) {
-			$dir = ' dir="ltr"';
-		}
+		$app   = JFactory::getApplication();
+		$input = $app->input;
 
-		if ($ishathor)
+		$data['categories'] = $this->getCategories();
+
+		$data['extensionlayout'] = $input->get('extensionlayout', '');
+
+		$data['baseUrl']       = 'http://' . $this->directoryServer;
+		$data['reviewBaseUrl'] = $data['baseUrl'] . '/index.php?option=' . $this->directoryComponent
+											. '&view=extension&layout=default&id=';
+
+		$data['detailBaseUrl'] = 'index.php?option=com_installer&view=install&layout=detail';
+
+		$data['filter_search'] = '';
+		$data['ordering']      = $this->getOrdering();
+
+		// Get the view
+		$layout = $input->get('layout', 'category');
+
+		// Get the jed category id if set
+		$jedcatid = $input->getInt('jedcatid');
+
+		$data['layout']     = $layout;
+		$data['jedcatid']   = $jedcatid;
+		$data['breadcrumb'] = $this->prepareBreadcrumb($jedcatid);
+
+		// When we are in detail layout we are showing ONE extensions details
+		if ($layout == 'detail')
 		{
-			JHtml::_('jquery.framework');
-			echo '<div class="clr"></div>';
-?>
-			<fieldset class="uploadform">
-				<legend><?php echo JText::_('COM_INSTALLER_INSTALL_FROM_WEB', true); ?></legend>
-				<div id="jed-container"<?php echo $dir; ?>>
-					<div id="mywebinstaller" style="display:none">
-						<a href="#"><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_LOAD_APPS'); ?></a>
-					</div>
-					<div class="well" id="web-loader" style="display:none">
-						<h2><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_LOADING'); ?></h2>
-					</div>
-					<div class="alert alert-error" id="web-loader-error" style="display:none">
-						<a class="close" data-dismiss="alert">×</a><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_LOADING_ERROR'); ?>
-					</div>
-				</div>
-				<fieldset class="uploadform" id="uploadform-web" style="display:none"<?php echo $dir; ?>>
-					<div class="control-group">
-						<strong><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_CONFIRM'); ?></strong><br />
-						<span id="uploadform-web-name-label"><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_CONFIRM_NAME'); ?>:</span> <span id="uploadform-web-name"></span><br />
-						<?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_CONFIRM_URL'); ?>: <span id="uploadform-web-url"></span>
-					</div>
-					<div class="form-actions">
-						<input type="button" class="btn btn-primary" value="<?php echo JText::_('COM_INSTALLER_INSTALL_BUTTON'); ?>" onclick="Joomla.submitbutton<?php echo $installfrom != '' ? 4 : 5; ?>()" />
-						<input type="button" class="btn btn-secondary" value="<?php echo JText::_('JCANCEL'); ?>" onclick="Joomla.installfromwebcancel()" />
-					</div>
-				</fieldset>
-			</fieldset>
-<?php
+			$id = $input->getInt('id');
+
+			$data['extension']  = $this->getExtension($id, $jedcatid);
+			$data['download']   = $this->prepareDownloadInformation($data['extension']);
+
+			$data['backlink']   = 'index.php?option=com_installer&view=install&layout=category&jedcatid=' . $jedcatid;
+
+			return $this->renderTab($data);
 		}
-		else
+
+		// Search layout, if quite the same as a category layout just after a search
+		if ($layout == 'searchresult')
 		{
-			echo JHtml::_('bootstrap.addTab', 'myTab', 'web', JText::_('COM_INSTALLER_INSTALL_FROM_WEB', true));
-?>
-				<div id="jed-container" class="tab-pane">
-					<div class="well" id="web-loader">
-						<h2><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_LOADING'); ?></h2>
-					</div>
-					<div class="alert alert-error" id="web-loader-error" style="display:none">
-						<a class="close" data-dismiss="alert">×</a><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_LOADING_ERROR'); ?>
-					</div>
-				</div>
-	
-				<fieldset class="uploadform" id="uploadform-web" style="display:none"<?php echo $dir; ?>>
-					<div class="control-group">
-						<strong><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_CONFIRM'); ?></strong><br />
-						<span id="uploadform-web-name-label"><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_CONFIRM_NAME'); ?>:</span> <span id="uploadform-web-name"></span><br />
-						<?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_CONFIRM_URL'); ?>: <span id="uploadform-web-url"></span>
-					</div>
-					<div class="form-actions">
-						<input type="button" class="btn btn-primary" value="<?php echo JText::_('COM_INSTALLER_INSTALL_BUTTON'); ?>" onclick="Joomla.submitbutton<?php echo $installfrom != '' ? 4 : 5; ?>()" />
-						<input type="button" class="btn btn-secondary" value="<?php echo JText::_('JCANCEL'); ?>" onclick="Joomla.installfromwebcancel()" />
-					</div>
-				</fieldset>
+			$data['filter_search'] = JFactory::getApplication()->input->getString('filter_search', '');
+			$data['extensions']    = $this->searchExtensions($jedcatid);
+			$data['detailBaseUrl'] = $data['detailBaseUrl'] . '&jedcatid=' . $jedcatid;
+			$data['pagination']    = $this->getPagination($data['extensions']);
+			$data['breadcrumb']    = $this->prepareBreadcrumb($jedcatid);
 
-<?php
-			echo JHtml::_('bootstrap.endTab');
+			return $this->renderTab($data);
 		}
 
+		// In category layout it is ONE Category we are showing
+		if ($layout == 'category' && ! empty($jedcatid))
+		{
+			$data['extensions'] = $this->getExtensions($jedcatid);
+			$data['detailBaseUrl'] = $data['detailBaseUrl'] . '&jedcatid=' . $jedcatid;
+			$data['pagination'] = $this->getPagination($data['extensions']);
+			$data['breadcrumb'] = $this->prepareBreadcrumb($jedcatid);
+
+			return $this->renderTab($data);
+		}
+
+		$data['extensions'] = $this->getExtensions($jedcatid);
+		$data['pagination'] = $this->getPagination($data['extensions']);
+		$data['breadcrumb'] = $this->prepareBreadcrumb($jedcatid);
+
+		return $this->renderTab($data);
+	}
+
+	/**
+	 * get a pagination object if pagination data available
+	 *
+	 * @param   string  $data  the data
+	 *
+	 * @return bool|JPagination
+	 */
+	private function getPagination($data)
+	{
+		if (! array_key_exists('pagination', $data))
+		{
+			return false;
+		}
+
+		$paginationData = $data['pagination'];
+		$pagination = new JPagination($paginationData['total'], $paginationData['limitstart'], $paginationData['limit']);
+
+		return $pagination;
+	}
+
+	/**
+	 * render the data
+	 *
+	 * @param   object  $data  data to render as json
+	 *
+	 * @return string
+	 */
+	private function renderTab($data)
+	{
+		return JLayoutHelper::render('joomla.installer.web.tab', $data);
 	}
 }

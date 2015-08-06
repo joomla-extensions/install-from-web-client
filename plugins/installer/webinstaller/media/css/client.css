@@ -1,0 +1,35 @@
+div.breadcrumbarea {margin-top: 10px;margin-bottom: 10px;}
+
+div.extension {margin-top: 10px;margin-bottom: 10px;}
+
+div.extension > .full-item-container > div.span3 {margin-left: 0}
+div.extension > .full-item-container >div div.info {padding-left: 15px;}
+
+div.extension dl dt {width: 100px;float: left;clear: left}
+div.extension dl dd {width: 300px;float: left;}
+div.extension .bandl {margin-top: 20px;}
+div.extension .badges {clear: both;margin-top: 20px;}
+div.extension .description p.item-title {font-weight: bold;}
+
+
+div.extensions {margin-top: 10px;margin-bottom: 10px;}
+div.extensions .item-image {margin-bottom: 20px;height: 100px}
+div.extensions .item-image img {max-height: 100px}
+div.extensions .row-fluid {margin-bottom: 20px}
+div.extensions .thumbnail {height: 500px;overflow: hidden;}
+div.extensions .row-fluid .span2:first-child {margin-left: 0;}
+div.extensions .row-fluid .span2 {margin-left: 2.127659574%;}
+
+/* Extension type badges */
+.item-type .label-jcommercial,  .badges .badge-jcommercial{background-color:#f6c801; color: black; font-weight: normal; font-size: medium; vertical-align: bottom}
+.item-type .label-jmodule,  .badges .badge-jmodule{background-color:#e20a0a}
+.item-type .label-jplugin,  .badges .badge-jplugin{background-color:#57278e}
+.item-type .label-jcomponent, .badges .badge-jcomponent{background-color: #1e9e33}
+.item-type .label-jspecific,  .badges .badge-jspecific{background-color:#d69b34}
+.item-type .label-jtool,  .badges .badge-jtool{background-color:#333333}
+.item-type .label-jlanguage,  .badges .badge-jlanguage{background-color:#333333}
+.icon-star,  .icon-star-2{color: #f6d245}
+.icon-star-empty{color:#dcdcdc}
+ul.item-type {margin:0px}
+.jbadge{vertical-align:middle}
+

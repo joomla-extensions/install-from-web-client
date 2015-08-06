@@ -24,5 +24,12 @@ class plginstallerwebinstallerInstallerScript
             $query = 'UPDATE ' . $db->quoteName('#__extensions') . ' SET ' . $db->quoteName('enabled') . ' = 1 WHERE ' . $db->quoteName('type') . ' = ' . $db->quote('plugin') . ' AND ' . $db->quoteName('element') . ' = ' . $db->quote('webinstaller');
             $db->setQuery($query);
             $db->execute();
+
+            // copy layouts
+            JFolder::copy(  JPATH_SITE . '/plugins/installer/webinstaller/layouts/web', 
+            				JPATH_SITE . '/layouts/joomla/installer/web',
+            				'', true);	
+
+
         }
 }
