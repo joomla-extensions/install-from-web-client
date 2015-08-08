@@ -100,7 +100,7 @@ $download = $displayData['download'];
 						<?php endif;?>
 					</a>
 				<?php endif;?>
-				<a class="btn btn-warning" target="_blank" href="<?php echo $displayData['reviewBaseUrl'] . $item['id']['value'];?>">
+				<a class="btn btn-primary" target="_blank" href="<?php echo $displayData['reviewBaseUrl'] . $item['id']['value'];?>">
 					<?php echo JText::_('PLG_INSTALLER_WEBINSTALLER_DIRECTORY_LISTING'); ?>
 				</a>
 				<?php if (trim($item['support_link']['text']) != '') : ?>
