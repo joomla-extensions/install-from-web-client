@@ -189,12 +189,15 @@ body.ifw-busy {
 }
 
 #appsloading {
-	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
 	z-index: 1000;
 	opacity: .95;
 	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity = 95);
 	filter: alpha(opacity = 95);
-	background:rgba(255, 255, 255, .95) url('/media/jui/img/ajax-loader.gif') 50% 1% no-repeat;
+	background: url('/media/jui/img/ajax-loader.gif') rgba(255,255,255,0.7) 50% 10px no-repeat;
 }
 /* Put breakpoints in when the design breaks, not at generic widths */
 @media (max-width: 869px) {
