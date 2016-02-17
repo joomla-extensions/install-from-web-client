@@ -72,18 +72,18 @@ class PlgInstallerWebinstaller extends JPlugin
 		$updatestr2 = JText::_('JLIB_INSTALLER_UPDATE', true);
 
 		$javascript = <<<END
-apps_base_url = '$apps_base_url';
-apps_installat_url = '$apps_installat_url';
-apps_installfrom_url = '$apps_installfrom_url';
-apps_product = '$apps_product';
-apps_release = '$apps_release';
-apps_dev_level = '$apps_dev_level';
-apps_is_hathor = $ishathor;
-apps_installfromon = $installfromon;
-apps_btntxt = '$btntxt';
-apps_pv = '$pv';
-apps_updateavail1 = '$updatestr1';
-apps_updateavail2 = '$updatestr2';
+var apps_base_url = '$apps_base_url',
+apps_installat_url = '$apps_installat_url',
+apps_installfrom_url = '$apps_installfrom_url',
+apps_product = '$apps_product',
+apps_release = '$apps_release',
+apps_dev_level = '$apps_dev_level',
+apps_is_hathor = $ishathor,
+apps_installfromon = $installfromon,
+apps_btntxt = '$btntxt',
+apps_pv = '$pv',
+apps_updateavail1 = '$updatestr1',
+apps_updateavail2 = '$updatestr2',
 apps_obsolete = '$obsoletestr';
 
 jQuery(document).ready(function() {
