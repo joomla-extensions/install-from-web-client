@@ -2,8 +2,8 @@
 <extension version="3.2" type="plugin" group="installer" method="upgrade">
 	<name>plg_installer_webinstaller</name>
 	<author>Joomla! Project</author>
-	<creationDate>13 July 2015</creationDate>
-	<copyright>Copyright (C) 2013-2015 Open Source Matters. All rights reserved.</copyright>
+	<creationDate>17 February 2016</creationDate>
+	<copyright>Copyright (C) 2013-2016 Open Source Matters. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>
