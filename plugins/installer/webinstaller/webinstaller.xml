@@ -16,7 +16,8 @@
 	</files>
 	<scriptfile>webinstaller.script.php</scriptfile>
 	<updateservers>
-		<server type="extension" priority="1" name="WebInstaller Update Site">http://appscdn.joomla.org/webapps/jedapps/webinstaller.xml</server>
+		<server type="extension" priority="1" name="WebInstaller Update Site">https://appscdn.joomla.org/webapps/jedapps/webinstaller.xml</server>
+		<server type="extension" priority="2" name="WebInstaller Update Site">http://appscdn.joomla.org/webapps/jedapps/webinstaller.xml</server>
 	</updateservers>
 	<config>
 		<fields name="params">
