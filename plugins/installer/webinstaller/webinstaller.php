@@ -137,6 +137,12 @@ jQuery(document).ready(function() {
 			}
 		}
 	}
+	
+	jQuery('#myTabTabs a[href="#web"]').on('shown.bs.tab', function (e) {
+        	if (!Joomla.apps.loaded){
+           		Joomla.apps.initialize();
+        	}
+    	});
 });
 
 		
