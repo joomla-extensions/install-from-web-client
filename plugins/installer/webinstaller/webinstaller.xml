@@ -24,7 +24,7 @@
 			<fieldset name="basic">
 				<field name="tab_position" type="radio"
 					class="btn-group"
-					default="0"
+					default="1"
 					description="PLG_INSTALLER_WEBINSTALLER_TAB_POSITION_DESC"
 					label="PLG_INSTALLER_WEBINSTALLER_TAB_POSITION_LABEL"
 				>
