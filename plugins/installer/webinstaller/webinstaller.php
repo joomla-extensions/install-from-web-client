@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+JLoader::import('joomla.environment.browser');
+
 /**
  * Support for the "Install from Web" tab
  *
@@ -23,6 +25,13 @@ class PlgInstallerWebinstaller extends JPlugin
 	private $_hathor = null;
 	private $_installfrom = null;
 	private $_rtl = null;
+	
+	public function __construct (&$subject, $config = array())
+	{
+		parent::__construct($subject, $config);
+
+		$this->appsBaseUrl = (JBrowser::getInstance()->isSSLConnection() ? "https" : "http") . '://appscdn.joomla.org/webapps/';
+	}
 
 	public function onInstallerBeforeDisplay(&$showJedAndWebInstaller)
 	{
