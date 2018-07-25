@@ -271,4 +271,8 @@ END;
 		}
 
 	}
+	public function onInstallerAddInstallationTab()
+	{
+		return ['joomla'];
+	}
 }
