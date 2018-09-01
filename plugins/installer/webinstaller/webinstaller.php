@@ -3,13 +3,14 @@
  * @package     Joomla.Plugin
  * @subpackage  Installer.webinstaller
  *
- * @copyright   Copyright (C) 2013-2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2013 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 
 /**
@@ -58,6 +59,11 @@ class PlgInstallerWebinstaller extends CMSPlugin
 
 		$document = JFactory::getDocument();
 		$ver = new JVersion;
+
+		// Push language strings to the JavaScript store
+		// TODO - Add language strings to CMS
+		Text::script('PLG_INSTALLER_WEBINSTALLER_CANNOT_INSTALL_EXTENSION_IN_PLUGIN');
+		Text::script('PLG_INSTALLER_WEBINSTALLER_REDIRECT_TO_EXTERNAL_SITE_TO_INSTALL');
 
 		HTMLHelper::_('bootstrap.framework');
 		HTMLHelper::_('script', 'plg_installer_webinstaller/client.min.js', array('version' => 'auto', 'relative' => true));

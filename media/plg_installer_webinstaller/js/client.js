@@ -1,6 +1,10 @@
-// Only define the Joomla namespace if not defined.
-if (typeof(Joomla) === 'undefined') {
-	var Joomla = {};
+/**
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+if (!Joomla) {
+  throw new Error('Joomla API is not properly initialised');
 }
 
 Joomla.apps = {
@@ -108,18 +112,18 @@ Joomla.loadweb = function(url) {
 
 Joomla.webpaginate = function(url, target) {
 	jQuery('#web-paginate-loader').show();
-	
+
 	jQuery.get(url, function(response) {
 		jQuery('#web-paginate-loader').hide();
 		jQuery('#'+target).html(response.data.html);
-	}, 'jsonp').fail(function() { 
+	}, 'jsonp').fail(function() {
 		jQuery('#web-paginate-loader').hide();
 		//jQuery('#web-paginate-error').hide();
-	});	
+	});
 };
 
 Joomla.installfromwebexternal = function(redirect_url) {
-	var redirect_confirm = confirm('You will be redirected to the following link to complete the registration/purchase - \n'+redirect_url);
+	var redirect_confirm = confirm(Joomla.JText._('PLG_INSTALLER_WEBINSTALLER_REDIRECT_TO_EXTERNAL_SITE_TO_INSTALL').replace('[SITEURL]', redirectUrl));
 	if(true == redirect_confirm) {
 		jQuery('#adminForm').attr('action', redirect_url);
 		jQuery("input[name=task]").prop( "disabled", true );
@@ -134,7 +138,7 @@ Joomla.installfromwebexternal = function(redirect_url) {
 
 Joomla.installfromweb = function(install_url, name) {
 	if ('' == install_url) {
-		alert("This extension cannot be installed via the web. Please visit the developer's website to purchase/download.");
+		alert(Joomla.JText._('PLG_INSTALLER_WEBINSTALLER_CANNOT_INSTALL_EXTENSION_IN_PLUGIN'));
 		return false;
 	}
 	jQuery('#install_url').val(install_url);
@@ -163,7 +167,7 @@ Joomla.installfromwebajaxsubmit = function() {
 	if (Joomla.apps.id) {
 		tail += '&id='+Joomla.apps.id;
 	}
-	
+
 	if (jQuery('#com-apps-searchbox').val()) {
 		var value = encodeURI(jQuery('#com-apps-searchbox').val().toLowerCase().replace(/ +/g,'_').replace(/[^a-z0-9-_]/g,'').trim());
 		tail += '&filter_search='+value;
@@ -223,15 +227,15 @@ Joomla.apps.initialize = function() {
 	}
 
 	Joomla.loadweb(apps_base_url+'index.php?format=json&option=com_apps&view=dashboard');
-	
+
 	Joomla.apps.clickforlinks();
-	
+
 	jQuery('#com-apps-searchbox').live('keypress', function(event){
 		if(event.which == 13) {
 			Joomla.apps.initiateSearch();
 		}
 	});
-	
+
 	jQuery('#search-reset').live('click', function(event){
 		jQuery('#com-apps-searchbox').val('');
 		Joomla.apps.initiateSearch();
@@ -241,7 +245,7 @@ Joomla.apps.initialize = function() {
 		Joomla.apps.ordering = jQuery(this).prop("selectedIndex");
 		Joomla.installfromwebajaxsubmit();
 	});
-	
+
 	if (apps_installfrom_url != '') {
 		Joomla.installfromweb(apps_installfrom_url);
 	}
@@ -272,7 +276,7 @@ Joomla.apps.clicker = function() {
 Joomla.submitbutton5 = function(pressbutton)
 {
 	var form = document.getElementById('adminForm');
-	
+
 	// do field validation
 	if (form.install_url.value != "" && form.install_url.value != "http://")
 	{
