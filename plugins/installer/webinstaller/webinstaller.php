@@ -10,15 +10,22 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
 
 /**
  * Support for the "Install from Web" tab
  *
- * @since  3.2
+ * @since  1.0
  */
-class PlgInstallerWebinstaller extends JPlugin
+class PlgInstallerWebinstaller extends CMSPlugin
 {
-	public $appsBaseUrl = 'https://appscdn.joomla.org/webapps/';
+	/**
+	 * The URL for the remote server.
+	 *
+	 * @var    string
+	 * @since  2.0
+	 */
+	const REMOTE_URL = 'https://appscdn.joomla.org/webapps/';
 
 	private $_hathor = null;
 	private $_installfrom = null;
@@ -59,7 +66,7 @@ class PlgInstallerWebinstaller extends JPlugin
 		$installer = new JInstaller();
 		$manifest = $installer->isManifest(JPATH_PLUGINS . DIRECTORY_SEPARATOR . 'installer' . DIRECTORY_SEPARATOR . 'webinstaller' . DIRECTORY_SEPARATOR . 'webinstaller.xml');
 
-		$apps_base_url = addslashes($this->appsBaseUrl);
+		$apps_base_url = addslashes(self::REMOTE_URL);
 		$apps_installat_url = base64_encode(JURI::current(true) . '?option=com_installer&view=install');
 		$apps_installfrom_url = addslashes($installfrom);
 		$apps_product = base64_encode($ver->PRODUCT);
