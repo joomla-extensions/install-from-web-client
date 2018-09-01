@@ -11,9 +11,11 @@
 	<description>PLG_INSTALLER_WEBINSTALLER_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="webinstaller">webinstaller.php</filename>
+	</files>
+	<media destination="plg_installer_webinstaller" folder="media">
 		<folder>css</folder>
 		<folder>js</folder>
-	</files>
+	</media>
 	<scriptfile>webinstaller.script.php</scriptfile>
 	<updateservers>
 		<server type="extension" priority="1" name="WebInstaller Update Site">https://appscdn.joomla.org/webapps/jedapps/webinstaller.xml</server>

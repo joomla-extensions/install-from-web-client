@@ -9,12 +9,12 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * Support for the "Install from Web" tab
  *
- * @package     Joomla.Plugin
- * @subpackage  System.webinstaller
- * @since       3.2
+ * @since  3.2
  */
 class PlgInstallerWebinstaller extends JPlugin
 {
@@ -28,18 +28,18 @@ class PlgInstallerWebinstaller extends JPlugin
 	{
 		$showJedAndWebInstaller = false;
 	}
-	
+
 	public function onInstallerViewBeforeFirstTab()
 	{
 		$app = JFactory::getApplication();
- 
+
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_installer_webinstaller', JPATH_ADMINISTRATOR);
 		if (!$this->params->get('tab_position', 0)) {
 			$this->getChanges();
 		}
 	}
-	
+
 	public function onInstallerViewAfterLastTab()
 	{
 		if ($this->params->get('tab_position', 0)) {
@@ -51,10 +51,10 @@ class PlgInstallerWebinstaller extends JPlugin
 
 		$document = JFactory::getDocument();
 		$ver = new JVersion;
-		$min = JFactory::getConfig()->get('debug') ? '' : '.min';
 
-		$document->addScript(JURI::root() . 'plugins/installer/webinstaller/js/client' . $min . '.js?jversion=' . JVERSION);
-		$document->addStyleSheet(JURI::root() . 'plugins/installer/webinstaller/css/client' . $min . '.css?jversion=' . JVERSION);
+		HTMLHelper::_('bootstrap.framework');
+		HTMLHelper::_('script', 'plg_installer_webinstaller/client.min.js', array('version' => 'auto', 'relative' => true));
+		HTMLHelper::_('stylesheet', 'plg_installer_webinstaller/client.min.css', array('version' => 'auto', 'relative' => true));
 
 		$installer = new JInstaller();
 		$manifest = $installer->isManifest(JPATH_PLUGINS . DIRECTORY_SEPARATOR . 'installer' . DIRECTORY_SEPARATOR . 'webinstaller' . DIRECTORY_SEPARATOR . 'webinstaller.xml');
@@ -175,7 +175,7 @@ END;
 		}
 		return $this->_rtl;
 	}
-	
+
 	private function getInstallFrom()
 	{
 		if (is_null($this->_installfrom))
@@ -198,7 +198,7 @@ END;
 		}
 		return $this->_installfrom;
 	}
-	
+
 	private function getChanges()
 	{
 		$ishathor = $this->isHathor() ? 1 : 0;
@@ -253,7 +253,7 @@ END;
 						<a class="close" data-dismiss="alert">×</a><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_LOADING_ERROR'); ?>
 					</div>
 				</div>
-	
+
 				<fieldset class="uploadform" id="uploadform-web" style="display:none"<?php echo $dir; ?>>
 					<div class="control-group">
 						<strong><?php echo JText::_('COM_INSTALLER_WEBINSTALLER_INSTALL_WEB_CONFIRM'); ?></strong><br />

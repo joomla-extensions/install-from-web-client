@@ -76,6 +76,32 @@ if (!class_exists('JInstallerScript'))
 class plginstallerwebinstallerInstallerScript extends JInstallerScript
 {
 	/**
+	 * A list of files to be deleted
+	 *
+	 * @var    array
+	 * @since  2.0
+	 */
+	protected $deleteFiles = array(
+		'/plugins/installer/webinstaller/css/client.css',
+		'/plugins/installer/webinstaller/css/client.min.css',
+		'/plugins/installer/webinstaller/css/index.html',
+		'/plugins/installer/webinstaller/index.html',
+		'/plugins/installer/webinstaller/js/client.js',
+		'/plugins/installer/webinstaller/js/client.min.js',
+	);
+
+	/**
+	 * A list of folders to be deleted
+	 *
+	 * @var    array
+	 * @since  2.0
+	 */
+	protected $deleteFolders = array(
+		'/plugins/installer/webinstaller/css',
+		'/plugins/installer/webinstaller/js',
+	);
+
+	/**
 	 * Minimum PHP version required to install the extension
 	 *
 	 * @var    string
