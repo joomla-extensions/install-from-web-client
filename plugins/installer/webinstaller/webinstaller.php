@@ -283,4 +283,9 @@ JS;
 
 		return $this->installfrom;
 	}
+
+	public function onInstallerAddInstallationTab()
+	{
+		return array('ifw');
+	}
 }
