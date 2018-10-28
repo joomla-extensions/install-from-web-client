@@ -9,6 +9,13 @@
 
 defined('_JEXEC') or die;
 
+// If the minimum PHP version constant hasn't been defined (really old Joomla version), set it now
+if (!defined('JOOMLA_MINIMUM_PHP'))
+{
+	// Minimum as of Joomla! 3.3
+	define('JOOMLA_MINIMUM_PHP', '5.3.10');
+}
+
 // Stub the JInstallerScript class for older versions to perform the minimum required checks
 if (!class_exists('JInstallerScript'))
 {
