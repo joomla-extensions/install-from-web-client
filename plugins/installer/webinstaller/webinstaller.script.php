@@ -141,7 +141,6 @@ class plginstallerwebinstallerInstallerScript extends JInstallerScript
 			// Disallow installs on 4.0 as the plugin is part of core
 			if (version_compare(JVERSION, '4.0', '>='))
 			{
-				// TODO - Add language string to CMS
 				JLog::add(JText::_('PLG_INSTALLER_WEBINSTALLER_ERROR_PLUGIN_INCLUDED_IN_CORE'), JLog::WARNING, 'jerror');
 
 				return false;
