@@ -61,9 +61,8 @@ Joomla.loadweb = function (url) {
 
     jQuery.ajax({
         url: url,
-        dataType: 'jsonp',
+        dataType: 'json',
         cache: true,
-        jsonpCallback: "jedapps_jsonpcallback",
         timeout: 20000,
         success: function (response) {
             jQuery('#web-loader').hide();
