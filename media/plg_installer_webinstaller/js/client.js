@@ -49,14 +49,7 @@ Joomla.loadweb = function (url) {
     jQuery('html, body').animate({scrollTop: 0}, 0);
 
     if (jQuery('#myTabContent').length) {
-        jQuery('#appsloading')
-            .css("position", "absolute")
-            .css("left", "0")
-            .css("top", "0")
-            .css("width", "100%")
-            .css("height", "100%")
-            .appendTo(jQuery('#web').css('position', 'relative'));
-        jQuery.event.trigger("ajaxStart");
+        Joomla.loadingLayer('show', jQuery('#myTabContent')[0]);
     }
 
     jQuery.ajax({
@@ -84,17 +77,13 @@ Joomla.loadweb = function (url) {
                 }
             }
 
-            if (jQuery('#myTabContent').length) {
-                jQuery.event.trigger("ajaxStop");
-            }
+            Joomla.apps.hideLoadingLayer();
         },
         fail: function () {
             jQuery('#web-loader').hide();
             jQuery('#web-loader-error').show();
 
-            if (jQuery('#myTabContent').length) {
-                jQuery.event.trigger("ajaxStop");
-            }
+            Joomla.apps.hideLoadingLayer();
         },
         complete: function () {
             if (jQuery('#joomlaapsinstallatinput')) {
@@ -108,9 +97,7 @@ Joomla.loadweb = function (url) {
                 jQuery(".list-view").click();
             }
 
-            if (jQuery('#myTabContent').length) {
-                jQuery.event.trigger("ajaxStop");
-            }
+            Joomla.apps.hideLoadingLayer();
         },
         error: function (request, status, error) {
             if (request.responseText) {
@@ -120,9 +107,7 @@ Joomla.loadweb = function (url) {
             jQuery('#web-loader').hide();
             jQuery('#web-loader-error').show();
 
-            if (jQuery('#myTabContent').length) {
-                jQuery.event.trigger("ajaxStop");
-            }
+            Joomla.apps.hideLoadingLayer();
         }
     });
 
@@ -251,18 +236,6 @@ Joomla.apps.clickforlinks = function () {
 Joomla.apps.initialize = function () {
     Joomla.apps.loaded = 1;
 
-    if (jQuery('#myTabContent').length) {
-        jQuery('<div id="appsloading"></div>')
-            .appendTo(jQuery('#web').css('position', 'absolute'));
-        jQuery('#appsloading').ajaxStart(function () {
-            jQuery('body').addClass('ifw-busy');
-            jQuery(this).show();
-        }).ajaxStop(function () {
-            jQuery(this).hide();
-            jQuery('body').removeClass('ifw-busy');
-        });
-    }
-
     Joomla.loadweb(Joomla.apps.options.base_url + 'index.php?format=json&option=com_apps&view=dashboard');
 
     Joomla.apps.clickforlinks();
@@ -308,6 +281,12 @@ Joomla.apps.clicker = function () {
         jQuery("#btn-grid-view").removeClass("active");
         jQuery("#btn-list-view").addClass("active");
     });
+};
+
+Joomla.apps.hideLoadingLayer = function () {
+    if (jQuery('#myTabContent').length) {
+        Joomla.loadingLayer('hide', jQuery('#myTabContent')[0]);
+    }
 };
 
 Joomla.submitbutton5 = function (pressbutton) {
