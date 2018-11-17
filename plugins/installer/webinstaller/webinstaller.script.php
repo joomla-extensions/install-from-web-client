@@ -136,15 +136,17 @@ class plginstallerwebinstallerInstallerScript extends JInstallerScript
 	 */
 	public function preflight($type, $parent)
 	{
-		if (parent::preflight($type, $parent))
+		if (!parent::preflight($type, $parent))
 		{
-			// Disallow installs on 4.0 as the plugin is part of core
-			if (version_compare(JVERSION, '4.0', '>='))
-			{
-				JLog::add(JText::_('PLG_INSTALLER_WEBINSTALLER_ERROR_PLUGIN_INCLUDED_IN_CORE'), JLog::WARNING, 'jerror');
+			return false;
+		}
 
-				return false;
-			}
+		// Disallow installs on 4.0 as the plugin is part of core
+		if (version_compare(JVERSION, '4.0', '>='))
+		{
+			JLog::add(JText::_('PLG_INSTALLER_WEBINSTALLER_ERROR_PLUGIN_INCLUDED_IN_CORE'), JLog::WARNING, 'jerror');
+
+			return false;
 		}
 
 		return true;
