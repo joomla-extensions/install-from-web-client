@@ -3,7 +3,7 @@
  * @package     Joomla.Plugin
  * @subpackage  Installer.webinstaller
  *
- * @copyright   Copyright (C) 2013 - 2018 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2013 - 2019 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -75,6 +75,7 @@ if (!class_exists('JInstallerScript'))
 		}
 	}
 }
+
 /**
  * Support for the "Install from Web" tab
  *
