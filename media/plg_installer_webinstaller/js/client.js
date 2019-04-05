@@ -11,7 +11,6 @@ Joomla.apps = {
     view: "dashboard",
     id: 0,
     ordering: "",
-//	fonturl: 'http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic',
     cssfiles: [],
     jsfiles: [],
     list: 0,
@@ -54,8 +53,9 @@ Joomla.loadweb = function (url) {
 
     jQuery.ajax({
         url: url,
-        dataType: 'json',
+        dataType: 'jsonp',
         cache: true,
+        jsonpCallback: 'jedapps_jsonpcallback',
         timeout: 20000,
         success: function (response) {
             jQuery('#web-loader').hide();
