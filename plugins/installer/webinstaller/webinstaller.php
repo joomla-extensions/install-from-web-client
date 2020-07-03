@@ -32,7 +32,7 @@ class PlgInstallerWebinstaller extends CMSPlugin
 	 * @var    string
 	 * @since  2.0
 	 */
-	const REMOTE_URL = 'http://joomla-cms.localhost/';
+	const REMOTE_URL = 'https://appscdn.joomla.org/webapps/';
 
 	/**
 	 * The application object.
