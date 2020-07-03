@@ -11,7 +11,6 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Rule\UrlRule;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Language\Text;
@@ -33,7 +32,7 @@ class PlgInstallerWebinstaller extends CMSPlugin
 	 * @var    string
 	 * @since  2.0
 	 */
-	const REMOTE_URL = 'https://appscdn.joomla.org/webapps/';
+	const REMOTE_URL = 'http://joomla-cms.localhost/';
 
 	/**
 	 * The application object.
@@ -67,14 +66,6 @@ class PlgInstallerWebinstaller extends CMSPlugin
 	 * @since  1.0
 	 */
 	private $installfrom = null;
-
-	/**
-	 * Flag if the document is in a RTL direction
-	 *
-	 * @var    integer|null
-	 * @since  1.0
-	 */
-	private $rtl = null;
 
 	/**
 	 * Event listener for the `onInstallerBeforeDisplay` event.
@@ -229,23 +220,6 @@ JS;
 		}
 
 		return $this->_hathor;
-	}
-
-	/**
-	 * Internal check to determine if the output is in a RTL direction
-	 *
-	 * @return  integer
-	 *
-	 * @since   1.0
-	 */
-	private function isRTL()
-	{
-		if (is_null($this->rtl))
-		{
-			$this->rtl = strtolower(Factory::getDocument()->getDirection()) === 'rtl' ? 1 : 0;
-		}
-
-		return $this->rtl;
 	}
 
 	/**
